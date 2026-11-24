@@ -5,7 +5,8 @@ Usage:
   .venv/bin/python scripts/eval_synth.py --adapter out/lora_r16a/best
 Writes out/eval_report.txt (+ .json).
 """
-import argparse, json, pathlib, sys, time
+import argparse, json, pathlib, re, sys, time
+THINK_RE = re.compile(r"^</think>.*?</think>\s*", re.S)
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from tinygrad import Tensor, dtypes
 from qwen3 import Qwen3, Config, Tokenizer, build_prompt, user_content
