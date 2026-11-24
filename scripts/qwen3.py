@@ -48,8 +48,8 @@ class LoRALinear:
     self.lora_a = self.lora_b = None
     if r > 0:
       out_f, in_f = w.shape
-      self.lora_a = (Tensor.randn(r, in_f) * (in_f ** -0.5)).float().requires_grad_()
-      self.lora_b = Tensor.zeros(out_f, r, dtype=dtypes.float32).requires_grad_()
+      self.lora_a = (Tensor.randn(r, in_f) * (in_f ** -0.5)).float().is_param_()
+      self.lora_b = Tensor.zeros(out_f, r, dtype=dtypes.float32).is_param_()
       self.scale = alpha / r
   def __call__(self, x: Tensor) -> Tensor:
     y = x @ self.w.T
@@ -244,10 +244,15 @@ def user_content(en: str, zh: str | None) -> str:
   return (f"Cantonese reference: {zh}\n" if zh else "") + f"English sentence: {en}"
 
 def encode_example(tok, ex) -> tuple[list[int], list[int]]:
-  """(tokens, labels); labels=-100 on prompt positions, ids on target+im_end."""
+  """(tokens, labels) with NEXT-token alignment: labels[i] = token the model should
+  predict at position i (i.e. tokens[i+1]); -100 where nothing to predict/train."""
   p_ids = tok.encode(build_prompt(user_content(ex["en"], ex["zh"])))
   t_ids = tok.encode(ex["target"]) + [EOS_ID]
-  return p_ids + t_ids, [-100] * len(p_ids) + t_ids
+  toks = p_ids + t_ids
+  labels = [-100] * len(toks)
+  for i in range(len(p_ids) - 1, len(toks) - 1):  # positions whose next token is target/EOS
+    labels[i] = toks[i + 1]
+  return toks, labels
 
 class Tokenizer:
   def __init__(self, path: str):
