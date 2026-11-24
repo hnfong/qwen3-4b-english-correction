@@ -144,6 +144,7 @@ class Qwen3:
     self.norm = RMSNorm(cfg.dim, cfg.norm_eps)
     self.cos, self.sin = rope_tables(cfg.max_context, cfg.head_dim, cfg.rope_theta)
     self.caches = None
+    self._decode_jit = None
   # ---- weights
   def load_hf(self, path: str):
     path = pathlib.Path(path)
@@ -177,24 +178,51 @@ class Qwen3:
   def forward_train(self, tokens: Tensor) -> Tensor:
     h = self.emb[tokens].contiguous()
     for blk in self.blk: h = blk(h, self.cos, self.sin)
+    # no per-block realize here: single scheduling run, CSE handles everything
     return (self.norm(h).cast(self.emb.dtype) @ self.emb.T).float()  # (B,T,V) tied head
   # ---- inference
   def init_cache(self, batch: int = 1):
+    if self.caches is not None: return
     c = self.cfg
     self.caches = [Tensor.zeros(2, batch, c.max_context, c.n_kv_heads, c.head_dim, dtype=dtypes.bfloat16).contiguous().realize()
                    for _ in range(c.n_layers)]
-  def forward_infer(self, tokens: Tensor, start_pos: int) -> Tensor:
+  def _forward_cache(self, tokens: Tensor, start_pos, last_idx: int | None = None) -> Tensor:
+    """Cached forward. start_pos may be an int (prefill) or bound Variable (jitted decode).
+    Returns logits at last_idx (default: last position)."""
     assert self.caches is not None, "call init_cache first"
     h = self.emb[tokens].contiguous()
     for blk, cache in zip(self.blk, self.caches):
-      h = blk(h, self.cos, self.sin, start_pos, cache)
-    return (self.norm(h[:, -1]).cast(self.emb.dtype) @ self.emb.T).float()
+      # NOTE: realize h per block. The in-block cache assign.realize() splits scheduling;
+      # without realizing h, each block would recompute the entire lazy prefix (quadratic).
+      h = blk(h, self.cos, self.sin, start_pos, cache).realize()
+    if last_idx is not None: h = h[:, last_idx:last_idx + 1]
+    else: h = h[:, -1:]
+    return (self.norm(h).cast(self.emb.dtype) @ self.emb.T).float()
+  def _prefill(self, ids: list[int], chunk: int = 512) -> Tensor:
+    """Right-padded chunked prefill with fixed shapes (stable kernel cache).
+    Pad positions beyond len(ids) are never read afterwards."""
+    import math
+    n = len(ids)
+    n_chunks = max(1, math.ceil(n / chunk))
+    logits = None
+    for ci in range(n_chunks):
+      seg = ids[ci * chunk:(ci + 1) * chunk]
+      seg = seg + [0] * (chunk - len(seg))
+      logits = self._forward_cache(Tensor([seg], dtype=dtypes.int32), ci * chunk,
+                                   last_idx=(n - 1 - ci * chunk) if ci == n_chunks - 1 else None)
+    return logits[0]
+  def _decode_step(self, tokens: Tensor, start_pos) -> Tensor:
+    return self._forward_cache(tokens, start_pos)[:, 0]
   def generate(self, prompt_ids: list[int], max_new: int = 120, temperature: float = 0.0) -> list[int]:
+    from tinygrad import Variable, TinyJit
     c = self.cfg
     assert len(prompt_ids) + max_new <= c.max_context, "prompt too long"
     self.init_cache()
-    toks = list(prompt_ids)
-    logits = self.forward_infer(Tensor([toks], dtype=dtypes.int32), 0)[0]
+    if self._decode_jit is None:
+      self._decode_jit = TinyJit(self._decode_step, prune=True)
+    logits = self._prefill(prompt_ids).realize()
+    sp = len(prompt_ids)
+    v = Variable("start_pos", 1, c.max_context - 1)
     out = []
     for _ in range(max_new):
       if temperature <= 0:
@@ -203,9 +231,9 @@ class Qwen3:
         probs = (logits / temperature).softmax().numpy()
         nxt = int(__import__("numpy").random.choice(len(probs), p=probs))
       out.append(nxt)
-      if nxt == self.eos_id: break
-      logits = self.forward_infer(Tensor([[nxt]], dtype=dtypes.int32), len(toks))[0]
-      toks.append(nxt)
+      if nxt == self.eos_id or sp + 1 >= c.max_context: break
+      logits = self._decode_jit(Tensor([[nxt]], dtype=dtypes.int32), v.bind(sp)).realize()[0]
+      sp += 1
     return out
 
 # ---- chat template / example encoding ----
