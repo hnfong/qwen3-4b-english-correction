@@ -70,15 +70,10 @@ are reasonable. User will review afterwards. No hard deadline.
      **Open question: license for the code** (model card says Apache-2.0, matching
      the Qwen base model — add a LICENSE file?).
 
-8. **HF push blocked by token scope (action needed)**: the token in
-   `~/.cache/huggingface/token` is fine-grained and READ-ONLY
-   (`repo.content.read` only) — repo creation and push both 403. Either
-   (a) edit that token to add `repo.content.write` on your user namespace
-   (creation included), or (b) create the empty model repo
-   `sydneyfong/qwen3-4b-english-correction` on the website and add write access
-   for it to the token. Then run `bash scripts/hf_push.sh` (reads the token at
-   runtime; scrubs it from .git/config afterwards). Everything else is ready:
-   hf_repo/ has the PEFT adapter (verified vs tinygrad outputs), model card,
-   LICENSE, training data (LFS), example.
+8. **RESOLVED — HF repo is live**: after you updated the token perms,
+   https://huggingface.co/sydneyfong/qwen3-4b-english-correction was created and
+   pushed (10 files incl. PEFT adapter 132 MB, training data, model card,
+   LICENSE; public access verified). Note: HF's pre-receive YAML validation
+   rejected a free-text `datasets:` field — removed; data described in prose.
 9. **GitHub repo name noted**: qwen-small-english-correction (per your
    s/teacher/correction). Waiting for the remote from you; local dir kept as-is.
