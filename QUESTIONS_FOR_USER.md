@@ -37,3 +37,21 @@ are reasonable. User will review afterwards. No hard deadline.
 - **Evaluation:** fixed set of ~12 synthetic test sentences (varied: correct, grammar
   errors, awkward translationese, with/without Cantonese) + validation loss. Results
   written to `out/` for user review.
+
+## Notes for your review (end of session)
+
+1. **Training scale**: the macOS GPU watchdog (5K display + sustained GPU load)
+   constrained training to ~45 optimizer steps / ~200 examples via a restart-loop
+   driver. Val loss 2.0 -> 0.88 and all 14 synthetic evals pass, but more driver
+   cycles (`tmp/train_driver.sh`, runs unattended) would widen style coverage.
+2. **fp16 vs bf16**: training ran with fp16 base weights (Metal tensor-core
+   friendliness); inference/CLI uses bf16 (matches HF exactly). No issues observed.
+3. **Optimizer state resets** between driver restart cycles (AdamW moments);
+   acceptable at this scale, noted in JOURNAL.md.
+4. **GGUF export**: skipped (optional per your Q3 answer). The tinygrad CLI is the
+   deliverable; say the word if you want GGUF/Ollama.
+5. **Qwen3.5-4B**: you chose Qwen3-4B (no VL) — implemented as
+   Qwen3-4B-Instruct-2507 (non-thinking variant of the same model, cleaner SFT
+   targets). Flag if you want the original hybrid-thinking Qwen3-4B instead.
+6. **Cosmetic**: the step counter in training logs resets per driver cycle; the
+   adapter weights and best-checkpoint selection are unaffected.
