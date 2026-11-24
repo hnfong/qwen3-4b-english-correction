@@ -47,12 +47,15 @@ LoRA adapter used: `out/lora_r16a/best` (override with `--adapter`).
 
 ```bash
 bash scripts/setup.sh    # venv + pip deps + 8 GB HF weight download (+ dataset build if raw_data/ present)
+# get the trained adapter (published on Hugging Face; see hf_repo/ for its source):
+huggingface-cli download <YOUR_HF_USER>/qwen3-4b-english-teacher \
+  adapter_model.safetensors adapter_config.json --local-dir out/lora_r16a/best
 .venv/bin/python correct.py "He go to school yesterday."
 ```
 
-The trained adapter (`out/lora_r16a/best`, 126 MB) **is committed to git**, so
-`correct.py` works straight after setup. `raw_data/` is the user's local data and
-is not in git; it is only needed to rebuild the dataset for retraining.
+`raw_data/` is the user's local data and is not in git; it is only needed to
+rebuild the dataset for retraining. The training data + adapter are published on
+Hugging Face (see `hf_repo/` in this repo for the exact repo contents).
 
 ## Regenerate / retrain
 
