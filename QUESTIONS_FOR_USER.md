@@ -55,3 +55,17 @@ are reasonable. User will review afterwards. No hard deadline.
    targets). Flag if you want the original hybrid-thinking Qwen3-4B instead.
 6. **Cosmetic**: the step counter in training logs resets per driver cycle; the
    adapter weights and best-checkpoint selection are unaffected.
+
+7. **Publishing (prepared, not pushed — no credentials here)**:
+   - **Hugging Face** (`hf_repo/` in this repo, its own git repo, LFS-ready):
+     LoRA adapter in PEFT format + model card + training data (train/val jsonl,
+     samples, stats) + inference_example.py. Verified: loading the PEFT adapter
+     through transformers+peft reproduces the tinygrad outputs exactly.
+     To publish: `cd hf_repo && git remote add origin
+     https://huggingface.co/<YOUR_HF_USER>/qwen3-4b-english-teacher && git push -u origin main`
+     (or `huggingface-cli upload`). **Please confirm the repo name / whether you
+     want a separate dataset repo instead of data/ inside the model repo.**
+   - **GitHub** (this repo): history rewritten to drop the 126 MB adapter blob
+     (GitHub blocks >100 MB); pack is 3.4 MiB. The adapter lives on HF only now.
+     **Open question: license for the code** (model card says Apache-2.0, matching
+     the Qwen base model — add a LICENSE file?).

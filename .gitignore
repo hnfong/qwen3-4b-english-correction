@@ -6,3 +6,4 @@ raw_data/
 /tinygrad_ref/
 /.venv/
 __pycache__/
+hf_repo/
