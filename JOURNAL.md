@@ -98,3 +98,16 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
   token from .git/config after).
 - PEFT conversion verified again end-to-end; hf_repo commit history clean (2
   commits, LFS objects stored).
+
+## 2024-11-25 (final) — GitHub published
+
+- User resolved the rebase onto the GitHub seed commit; pushed main to
+  git@github.com:hnfong/qwen3-4b-english-correction (d08a7a4..46342ce).
+- HF model card now cross-links the GitHub repo (pushed, 5751c13).
+- Both repos live:
+  - HF:  https://huggingface.co/sydneyfong/qwen3-4b-english-correction
+    (PEFT adapter + model card + training data + example, LFS)
+  - GH:  https://github.com/hnfong/qwen3-4b-english-correction
+    (full tinygrad pipeline: data build, Qwen3 impl, LoRA training, eval, CLI)
+- correct.py's adapter path expects out/lora_r16a/best — populated via
+  huggingface-cli download (see README) or by running the training driver.
