@@ -4,11 +4,12 @@
 # Requires a token WITH write access (fine-grained: repo.content.write on the
 # user namespace, or a classic "write" token).
 set -e
-cd "$(dirname "$0")/../hf_repo"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT/hf_repo"
 TOKEN=$(cat ~/.cache/huggingface/token)
 REPO=sydneyfong/qwen3-4b-english-correction
 
-python3 - <<EOF
+"$ROOT/.venv/bin/python" - <<EOF
 from huggingface_hub import HfApi
 import pathlib
 api = HfApi(token=pathlib.Path.home().joinpath(".cache/huggingface/token").read_text().strip())

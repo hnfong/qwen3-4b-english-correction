@@ -48,7 +48,7 @@ LoRA adapter used: `out/lora_r16a/best` (override with `--adapter`).
 ```bash
 bash scripts/setup.sh    # venv + pip deps + 8 GB HF weight download (+ dataset build if raw_data/ present)
 # get the trained adapter (published on Hugging Face; see hf_repo/ for its source):
-huggingface-cli download <YOUR_HF_USER>/qwen3-4b-english-teacher \
+huggingface-cli download sydneyfong/qwen3-4b-english-correction \
   adapter_model.safetensors adapter_config.json --local-dir out/lora_r16a/best
 .venv/bin/python correct.py "He go to school yesterday."
 ```
