@@ -134,3 +134,14 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
 - Also produced self-quantized Q8_0 (4.3 GB) via llama-quantize from our own
   f16 merge — verified "I really like this song."
 - GGUFs at models/*.gguf (gitignored). Publish to HF = optional next step.
+
+## 2025-11-25 (cont.) — GGUFs published to HF
+
+- git-lfs push of multi-GB GGUFs consistently EOF'd at ref update (objects
+  uploaded fine, 151 MB batch worked, 4.3/8 GB batches did not — even HTTP/1.1).
+  Fallback: HfApi.upload_file (Xet HTTP, ~27 MB/s, resumable) — worked.
+  Local hf_repo git reconciled with remote (API-created commits), card +
+  .gitattributes re-applied as a text commit.
+- Both GGUFs live: f16 8.05 GB + q8_0 4.28 GB. Also: `git reset --hard` after
+  committing new files deletes those files from the worktree (lost the f16 copy
+  in hf_repo/, source of truth survived in models/).
