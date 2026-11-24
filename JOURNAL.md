@@ -111,3 +111,26 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
     (full tinygrad pipeline: data build, Qwen3 impl, LoRA training, eval, CLI)
 - correct.py's adapter path expects out/lora_r16a/best — populated via
   huggingface-cli download (see README) or by running the training driver.
+
+## 2025-11-25 (latest) — llama.cpp support (user-requested)
+
+- User (rightly) rejected third-party GGUF quants as merge base: instead merge
+  in our own stack, then convert the full model.
+- scripts/export_merged.py: loads base+adapter in tinygrad, merge_loras(),
+  exports HF-format dir (bf16 safetensors + config/tokenizer files) at
+  models/qwen3-4b-english-correction-hf. Bugs fixed: rope cos/sin tables leaked
+  into state dict (skip cos/sin/caches); hf_key produced q_norm_norm (strip);
+  load_hf now also accepts single-file safetensors (no index).
+- Merged model verified through OUR stack (correct.py --no-adapter): identical
+  outputs to adapter path.
+- Converted: tmp/llama.cpp convert_hf_to_gguf.py -> f16 GGUF (8.05 GB).
+  Gotcha: converter's Qwen3 path tries _set_vocab_sentencepiece FIRST and only
+  falls back to gpt2 on FileNotFoundError — the missing `sentencepiece` pip
+  package raised ModuleNotFoundError instead. Fix: pip install sentencepiece.
+- VERIFIED with llama-completion (llama.cpp 0.7.0-dev): greedy outputs match
+  tinygrad/HF references exactly on 4 cases (incl. Cantonese-context sensitivity
+  "This little thing..." vs "This thing..."). Note: this build has no -no-cnv;
+  use llama-completion for raw-template runs.
+- Also produced self-quantized Q8_0 (4.3 GB) via llama-quantize from our own
+  f16 merge — verified "I really like this song."
+- GGUFs at models/*.gguf (gitignored). Publish to HF = optional next step.

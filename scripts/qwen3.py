@@ -148,9 +148,12 @@ class Qwen3:
   # ---- weights
   def load_hf(self, path: str):
     path = pathlib.Path(path)
-    idx = json.loads((path / "model.safetensors.index.json").read_text())["weight_map"]
-    shards = {s: safe_load(path / s) for s in sorted(set(idx.values()))}
-    hf = {k: shards[s][k].to(Device.DEFAULT) for k, s in idx.items()}
+    if (path / "model.safetensors.index.json").exists():
+      idx = json.loads((path / "model.safetensors.index.json").read_text())["weight_map"]
+      shards = {s: safe_load(path / s) for s in sorted(set(idx.values()))}
+      hf = {k: shards[s][k].to(Device.DEFAULT) for k, s in idx.items()}
+    else:  # single-file export (e.g. scripts/export_merged.py output)
+      hf = {k: t.to(Device.DEFAULT) for k, t in safe_load(path / "model.safetensors").items()}
     self.emb.replace(hf["model.embed_tokens.weight"]); self.norm.weight.replace(hf["model.norm.weight"])
     for i, blk in enumerate(self.blk):
       p = f"model.layers.{i}."
