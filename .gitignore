@@ -1,3 +1,8 @@
 raw_data/
 /out
 /tmp
+/models
+/data/*.jsonl
+/tinygrad_ref/
+/.venv/
+__pycache__/
