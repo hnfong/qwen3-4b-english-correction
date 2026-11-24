@@ -7,7 +7,8 @@ Usage:
   .venv/bin/python correct.py "..." --no-adapter          # base model
   .venv/bin/python correct.py "..." --adapter out/lora_r16a/best
 """
-import argparse, pathlib, sys
+import argparse, pathlib, re, sys
+THINK_RE = re.compile(r"^<think>.*?</think>\s*", re.S)  # hybrid-thinking variants (e.g. Qwen3-1.7B)
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "scripts"))
 from tinygrad import Tensor, dtypes
 from qwen3 import Qwen3, Config, Tokenizer, build_prompt, user_content
@@ -39,7 +40,7 @@ def main():
         prompt = build_prompt(user_content(args.sentence, args.cantonese))
         ids = tok.encode(prompt)
         out = model.generate(ids, max_new=args.max_new, temperature=args.temperature)
-        text = tok.decode(out).split("\n")[0].strip()
+        text = THINK_RE.sub("", tok.decode(out), count=1).split("\n")[0].strip()
         print(text)
     else:
         def ask(p):
@@ -54,7 +55,7 @@ def main():
             prompt = build_prompt(user_content(sentence, cantonese))
             ids = tok.encode(prompt)
             out = model.generate(ids, max_new=args.max_new, temperature=args.temperature)
-            text = tok.decode(out).split("\n")[0].strip()
+            text = THINK_RE.sub("", tok.decode(out), count=1).split("\n")[0].strip()
             print("=>", text)
 
 

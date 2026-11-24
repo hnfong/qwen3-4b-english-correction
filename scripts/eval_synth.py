@@ -5,7 +5,8 @@ Usage:
   .venv/bin/python scripts/eval_synth.py --adapter out/lora_r16a/best
 Writes out/eval_report.txt (+ .json).
 """
-import argparse, json, pathlib, sys, time
+import argparse, json, pathlib, re, sys, time
+THINK_RE = re.compile(r"^</think>.*?</think>\s*", re.S)
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from tinygrad import Tensor, dtypes
 from qwen3 import Qwen3, Config, Tokenizer, build_prompt, user_content
@@ -28,7 +29,7 @@ CASES = [
     ("Hong Kong is a nice city and the food is also very nice and the people are nice too.", None, "repetition"),
 ]
 
-def generate(model, tok, en, zh, max_new=60):
+def generate(model, tok, en, zh, max_new):
     prompt = build_prompt(user_content(en, zh))
     ids = tok.encode(prompt)
     out = model.generate(ids, max_new=max_new, temperature=0.0)
@@ -41,6 +42,8 @@ def main():
     ap.add_argument("--model", default="models/qwen3-4b-instruct")
     ap.add_argument("--adapter", default=None, help="LoRA dir with adapter.safetensors")
     ap.add_argument("--out", default="out/eval_report")
+    ap.add_argument("--max-new", type=int, default=60,
+                    help="raise to ~400 for hybrid-thinking BASE models")
     args = ap.parse_args()
 
     tok = Tokenizer(args.model)
@@ -60,8 +63,8 @@ def main():
             print("merged LoRA adapter")
         for en, zh, note in CASES:
             t0 = time.time()
-            out_zh = generate(model, tok, en, zh) if zh else None
-            out_no = generate(model, tok, en, None)
+            out_zh = generate(model, tok, en, zh, args.max_new) if zh else None
+            out_no = generate(model, tok, en, None, args.max_new)
             results.append({"case": note, "en": en, "zh": zh, "model": tag,
                             "out_with_zh": out_zh, "out_without_zh": out_no,
                             "sec": round(time.time() - t0, 1)})
