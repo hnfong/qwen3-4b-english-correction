@@ -43,17 +43,28 @@ LoRA adapter used: `out/lora_r16a/best` (override with `--adapter`).
 4. **Eval** (`scripts/eval_synth.py` → `out/eval_report.txt`): 14 synthetic cases —
    all pass, including identity behavior on already-correct input.
 
+## Setup from a clean clone
+
+```bash
+bash scripts/setup.sh    # venv + pip deps + 8 GB HF weight download (+ dataset build if raw_data/ present)
+.venv/bin/python correct.py "He go to school yesterday."
+```
+
+The trained adapter (`out/lora_r16a/best`, 126 MB) **is committed to git**, so
+`correct.py` works straight after setup. `raw_data/` is the user's local data and
+is not in git; it is only needed to rebuild the dataset for retraining.
+
 ## Regenerate / retrain
 
 ```bash
-.venv/bin/python scripts/build_dataset.py                     # rebuild data
-tmp/train_driver.sh                                           # restart-loop training
-.venv/bin/python scripts/eval_synth.py --adapter out/lora_r16a/best
+.venv/bin/python scripts/build_dataset.py                     # rebuild data (needs raw_data/)
+RUN=r16b BUDGET_MIN=27 bash tmp/train_driver.sh               # restart-loop training
+.venv/bin/python scripts/eval_synth.py --adapter out/lora_r16b/best
 ```
 
-Setup: `python3.12 -m venv .venv && .venv/bin/pip install tinygrad tokenizers numpy`
-(weights: `models/qwen3-4b-instruct/`, downloaded from HF; AGENTS.md protocol
-followed — artifacts in `out/`, scratch in `tmp/`).
+Training is seeded but NOT bit-reproducible: the restart driver's per-process
+step counts depend on machine speed, which shifts the data-shuffle sequence.
+Quality-wise runs converge to the same behavior (val loss ~0.9, eval 14/14).
 
 ## Known limitations
 
