@@ -60,3 +60,25 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
   (md5 6cebde93...). So: runtime + data pipeline fully reproducible; retraining
   is seeded but not bit-reproducible (driver restart timing shifts the shuffle
   sequence) — quality-wise it converges to the same behavior.
+
+## 2024-11-25 — Publishing prep (HF + GitHub), correct.py REPL
+
+- correct.py: user added an interactive REPL (no sentence arg -> loop until
+  empty-empty); wired argparse to nargs="?" + EOF guard; committed.
+- **HF repo at hf_repo/** (own git repo, LFS): LoRA adapter CONVERTED to PEFT
+  format (scripts/convert_to_peft.py; 504 tensors, standard
+  base_model.model.model.layers.*.{self_attn,mlp}.*_proj.lora_{A,B}.weight keys)
+  + model card + training data (train/val jsonl in LFS, samples, stats) +
+  inference_example.py. VERIFIED: transformers+peft+adapter reproduces tinygrad
+  outputs exactly (4/4 test sentences).
+- **GitHub repo (this one)**: history rewritten with filter-branch to drop the
+  126 MB adapter blob (GitHub blocks >100 MB); pack 3.4 MiB. Also untracked
+  data/*.jsonl (they live in hf_repo now) + a stray .pyc.
+- **FOOTGUN**: filter-branch's final read-tree -u DELETED the working-tree
+  adapter (it became untracked). Recovered from tmp/clean_clone's checkout
+  (identical file). Lesson: before filter-branch, back up working-tree files
+  that the index-filter removes.
+- tmp/clean_clone is stale (pre-rewrite history); tmp/gh_check is the current
+  GitHub-clone smoke test (passes: setup.sh + correct.py with adapter supplied).
+- Push instructions + open questions (license, HF repo name) in
+  QUESTIONS_FOR_USER.md #7.
