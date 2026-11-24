@@ -49,7 +49,7 @@ def main():
     from tinygrad.nn.state import get_state_dict
     hf = {hf_key(k): t.cast("bfloat16").contiguous() for k, t in get_state_dict(model).items()
           if "lora" not in k and k not in ("cos", "sin", "caches")}
-    assert len(hf) == 36 * 11 + 2, f"unexpected tensor count {len(hf)}"  # 11/layer + emb + norm
+    assert len(hf) == model.cfg.n_layers * 11 + 2, f"unexpected tensor count {len(hf)}"  # 11/layer + emb + norm
     safe_save(hf, out / "model.safetensors")
 
     for f in ["config.json", "generation_config.json", "tokenizer.json",
