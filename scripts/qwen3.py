@@ -37,8 +37,9 @@ class RMSNorm:
   def __init__(self, dim, eps=1e-6):
     self.weight = Tensor.ones(dim); self.eps = eps
   def __call__(self, x):
-    x = x.float()
-    return (x * (x.square().mean(-1, keepdim=True) + self.eps).rsqrt()).cast(x.dtype) * self.weight
+    out_dtype = x.dtype
+    xf = x.float()
+    return (xf * (xf.square().mean(-1, keepdim=True) + self.eps).rsqrt()).cast(out_dtype) * self.weight.cast(out_dtype)
 
 class LoRALinear:
   """Frozen W (out,in) + optional LoRA: y = x@W.T + scale*(x@A.T@B.T). r=0 -> plain."""
@@ -100,7 +101,7 @@ class Attention:
     xq, xk = apply_rope(xq, cos, sin, start_pos), apply_rope(xk, cos, sin, start_pos)
     q_ = xq.transpose(1, 2)  # (B,H,T,D)
     if cache is not None:  # inference; cache: (2,B,ctx,KVH,D)
-      cache[:, :, start_pos:start_pos + T].assign(Tensor.stack(xk.transpose(1, 2), xv.transpose(1, 2))).realize()
+      cache[:, :, start_pos:start_pos + T].assign(Tensor.stack(xk, xv)).realize()
       end = start_pos + T
       keys = repeat_kv(cache[0, :, :end], n_rep).transpose(1, 2)      # (B,H,S,D)
       values = repeat_kv(cache[1, :, :end], n_rep).transpose(1, 2)
