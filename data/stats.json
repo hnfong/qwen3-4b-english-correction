@@ -1,0 +1,22 @@
+{
+ "train": 66167,
+ "val": 1374,
+ "n_unique_inputs": 33693,
+ "drop_en_has_cjk": 146,
+ "drop_no_target": 1735,
+ "drop_too_short": 113,
+ "identity_pairs": 312,
+ "n_entries": 35750,
+ "pair_gemma3": 22466,
+ "pair_human": 2256,
+ "pair_llama3": 20884,
+ "pair_plain": 21623,
+ "refusal_gemma3": 301,
+ "refusal_llama3": 20,
+ "refusal_plain": 226,
+ "target_cjk_gemma3": 2,
+ "target_cjk_human": 1,
+ "target_cjk_llama3": 3,
+ "target_cjk_plain": 97,
+ "target_same_as_original": 119
+}

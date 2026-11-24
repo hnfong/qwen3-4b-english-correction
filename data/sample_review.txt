@@ -1,0 +1,520 @@
+
+================================================================================
+correction_gemma3  (n=22466)
+================================================================================
+ZH: 阿女你成日著到咁哩啡執都唔執吓，邊有男仔會鍾意你呀？
+EN: My girl, the clothes you wear are sloppy and you're not even trying to tidy up at all, how come there will be boys who like you?
+TGT: You dress so sloppily, why would any boy be interested in you?
+--
+ZH: 幅畫畫到花哩花碌，我分唔到邊樣打邊樣喇。
+EN: The painting is too colourful that I can't distinguish any part from others.
+TGT: The painting is so colorful that I can't distinguish the different parts.
+--
+ZH: 逐漸變黑又得，立即變黑晒亦得，得咗。
+EN: (Your hair) can turn black gradually or right away. OK. (from an advertisement about a hair dyeing product, which is well known in Hong Kong)
+TGT: It can turn black gradually or instantly.
+--
+ZH: 好屎呀你，咁都贏唔到佢。
+EN: You can't even beat him? What a loser you are.
+TGT: You can't even beat him? You're terrible.
+--
+ZH: 喂！周圍咁多人你轉身小心啲得唔得呀？嗰下無情力撞到個細路瞓低喇。
+EN: Hey! Why were you so careless when you turned around in the crowd? With that unintentional force, that kid was hit down.
+TGT: Hey! Be careful when you turn around in the crowd. You accidentally knocked over a child.
+--
+ZH: 佢哋兩個日日都撐抬腳，十成十係有路定啦。
+EN: The two of them dine together every day. They must have an affair.
+TGT: They eat together every day. They must be having an affair.
+--
+ZH: 件衫咁巢𠵼𠵼嘅，拎去燙下啦。
+EN: You should iron this crumpled shirt.
+TGT: This shirt is very wrinkled, you should iron it.
+--
+ZH: 呢種級數嘅女仔，你成世都溝唔到架喇。
+EN: Women of that class, men like you would never win their hearts.
+TGT: Women like that are out of your league.
+--
+ZH: 淨飲得喇，我頭先食咗嘢。
+EN: Just drink is fine, as I have already eaten.
+TGT: Just drinking is fine, I've already eaten.
+--
+ZH: 啲麪漲咗就唔好食架喇。
+EN: Noodles do not taste good if they rise.
+TGT: Noodles don't taste good if they're overcooked.
+--
+ZH: 我霎時間記唔起佢係邊個。
+EN: I don't recall him in an instant.
+TGT: I can't recall him immediately.
+--
+ZH: 呢個設計好行囉，改改佢得唔得。
+EN: The design doesn't seem to be done seriously. Can you make some changes to it?
+TGT: This design seems a bit rough. Can you make some changes to it?
+--
+ZH: 我哋應該盡力將我哋連日以嚟嘅研究成果發揚光大。
+EN: We should try our best to develop and promote our findings established from many days of research.
+TGT: We should do our best to develop and share the results of our research.
+--
+ZH: 叫咗你唔好咁大聲講嘢㗎啦！而家俾人趕走喇，幾面懵呢！
+EN: I've told you to speak softly. Now that we've been kicked out, I feel so embarrassed!
+TGT: I told you to speak softly. Now that we've been kicked out, I'm so embarrassed!
+--
+ZH: 讀多啲書揾份好工，包你錢途一片光明
+EN: Reading more books and finding a good job will help you get more chance to earn money in your future.
+TGT: Reading more books and finding a good job will secure a brighter financial future for you.
+--
+ZH: 我做咗份報告咁多日，都重係做緊第一部份咋！
+EN: Tough I have worked on the report for so many days, I'm still doing the first part of it.
+TGT: Though I have been working on the report for so many days, I'm still on the first part.
+--
+ZH: 呢個商場係好多居民返屋企嘅必經之路，有好有唔好囉。
+EN: This shopping centre is the only way that many residents has to go through to go back home. There are some benefits but also some inconvenience of it.
+TGT: This shopping centre is a popular route for many residents on their way home, and it has both advantages and disadvantages.
+--
+ZH: 做乜格式化咗我隻USB手指啊？我入便啲資料有用㗎！
+EN: Why did you format my USB drive? My data inside is in need!
+TGT: Why did you format my USB drive? I needed the data on it!
+--
+ZH: 咁我哋就要去meet返佢哋嗰邊個要求。
+EN: We then need to meet their requirement.
+TGT: We then need to fulfill their requirements.
+--
+ZH: 個售貨員喺度解説緊件產品嘅功能。
+EN: The salesperson is at introducing the functions of the product.
+TGT: The salesperson is introducing the functions of the product.
+--
+ZH: 佢做每一件事都好用心。
+EN: She do everything very diligently.
+TGT: She is very diligent in everything she does.
+--
+ZH: A. #癩蝦蟆想食天鵝肉
+EN: (of an ugly guy) to fantasize about a girl out of his league; literally: a skin-diseased toad wants to eat swan meat
+TGT: He's a plain guy who dreams of dating someone out of his league.
+--
+ZH: 呢個group有幾個膽。
+EN: In this group there are some people who always showed up.
+TGT: There are reliable individuals in this group.
+--
+ZH: 賺大錢？做得住都偷笑啦！
+EN: Making a fortune? One should be blissful that it still survives!
+TGT: Making a fortune? Just staying afloat is a blessing.
+--
+ZH: 你著得好MK，連個頭都勁MK。
+EN: You dress so MK, and even your hair too.
+TGT: You dress so fashionably, even your hair is very trendy.
+--
+
+================================================================================
+correction_human  (n=2256)
+================================================================================
+ZH: 糯米同白米你都唔識分？
+EN: You can't even distinguish glutinous rice and white rice?
+TGT: Can't you even tell the difference between glutinous rice and white rice?
+--
+ZH: 阿女你成日著到咁哩啡執都唔執吓，邊有男仔會鍾意你呀？
+EN: My girl, the clothes you wear are sloppy and you're not even trying to tidy up at all, how come there will be boys who like you?
+TGT: Girl, you're always so untidy in your clothes, how can boys like you?
+--
+ZH: 幅畫畫到花哩花碌，我分唔到邊樣打邊樣喇。
+EN: The painting is too colourful that I can't distinguish any part from others.
+TGT: The painting is so colorful it's hard to tell its parts apart.
+--
+ZH: 逐漸變黑又得，立即變黑晒亦得，得咗。
+EN: (Your hair) can turn black gradually or right away. OK. (from an advertisement about a hair dyeing product, which is well known in Hong Kong)
+TGT: It (your hair) can turn black gradually, or even all at once.
+--
+ZH: 好屎呀你，咁都贏唔到佢。
+EN: You can't even beat him? What a loser you are.
+TGT: You can't even beat him? You're such a loser.
+--
+ZH: 喂！周圍咁多人你轉身小心啲得唔得呀？嗰下無情力撞到個細路瞓低喇。
+EN: Hey! Why were you so careless when you turned around in the crowd? With that unintentional force, that kid was hit down.
+TGT: Hey! Why were you so careless when you turned around in the crowd? You accidentally knocked over that kid.
+--
+ZH: 架車咁樣就會去㗎喇。
+EN: By this way the car will go faster and smoother.
+TGT: This way, the car will go faster and smoother.
+--
+ZH: 聽講你女神又#收兵 喇，你仲唔去拎form入伍？
+EN: Your crush is recruiting "gun jam bing". Do you get the form to join?
+TGT: I heard your crush is looking for a handyman, are you going to get the form to apply?
+--
+ZH: 佢哋兩個日日都撐抬腳，十成十係有路定啦。
+EN: The two of them dine together every day. They must have an affair.
+TGT: The two of them eat together every day. They must have something going on.
+--
+ZH: 件衫咁巢𠵼𠵼嘅，拎去燙下啦。
+EN: You should iron this crumpled shirt.
+TGT: You should iron this wrinkled shirt.
+--
+ZH: 呢種級數嘅女仔，你成世都溝唔到架喇。
+EN: Women of that class, men like you would never win their hearts.
+TGT: Girls like that are out of your league.
+--
+ZH: 淨飲得喇，我頭先食咗嘢。
+EN: Just drink is fine, as I have already eaten.
+TGT: I've already eaten, so just drinking is fine.
+--
+ZH: 唉，把鬼呀！
+EN: Agh, what a bad one this is!
+TGT: Argh! This thing is terrible!
+--
+ZH: 啲麪漲咗就唔好食架喇。
+EN: Noodles do not taste good if they rise.
+TGT: Noodles don't taste good if they're soggy.
+--
+ZH: 我霎時間記唔起佢係邊個。
+EN: I don't recall him in an instant.
+TGT: I can't recall who he is right away.
+--
+ZH: 呢個設計好行囉，改改佢得唔得。
+EN: The design doesn't seem to be done seriously. Can you make some changes to it?
+TGT: This design seems bland. Can you modify it?
+--
+ZH: 我哋應該盡力將我哋連日以嚟嘅研究成果發揚光大。
+EN: We should try our best to develop and promote our findings established from many days of research.
+TGT: We should try our best to further develop and promote our research results since we worked many days for it.
+--
+ZH: 叫咗你唔好咁大聲講嘢㗎啦！而家俾人趕走喇，幾面懵呢！
+EN: I've told you to speak softly. Now that we've been kicked out, I feel so embarrassed!
+TGT: I told you to speak softly. Now that we've been kicked out, I feel so embarrassed!
+--
+ZH: 讀多啲書揾份好工，包你錢途一片光明
+EN: Reading more books and finding a good job will help you get more chance to earn money in your future.
+TGT: Read more books and get a good job. I assure you will find success.
+--
+ZH: 我做咗份報告咁多日，都重係做緊第一部份咋！
+EN: Tough I have worked on the report for so many days, I'm still doing the first part of it.
+TGT: Although I've been working on the report for days, I'm still only on the first part.
+--
+ZH: 呢個商場係好多居民返屋企嘅必經之路，有好有唔好囉。
+EN: This shopping centre is the only way that many residents has to go through to go back home. There are some benefits but also some inconvenience of it.
+TGT: This shopping centre is on along the path where many residents return home, so it has its advantages and disadvantages.
+--
+ZH: 呢嚿嘢好可愛。
+EN: This thingy is cute.
+TGT: This thing is cute.
+--
+ZH: 做乜格式化咗我隻USB手指啊？我入便啲資料有用㗎！
+EN: Why did you format my USB drive? My data inside is in need!
+TGT: Why did you format my USB drive? I had important data inside!
+--
+ZH: 我間中都會飲吓酒㗎。
+EN: I will drink sometimes.
+TGT: I occasionally drink.
+--
+ZH: 咁我哋就要去meet返佢哋嗰邊個要求。
+EN: We then need to meet their requirement.
+TGT: We then need to fulfill their requirement.
+--
+
+================================================================================
+correction_llama3  (n=20884)
+================================================================================
+ZH: 阿女你成日著到咁哩啡執都唔執吓，邊有男仔會鍾意你呀？
+EN: My girl, the clothes you wear are sloppy and you're not even trying to tidy up at all, how come there will be boys who like you?
+TGT: You're always so untidy in your clothes, how can boys like you?
+--
+ZH: 逐漸變黑又得，立即變黑晒亦得，得咗。
+EN: (Your hair) can turn black gradually or right away. OK. (from an advertisement about a hair dyeing product, which is well known in Hong Kong)
+TGT: It's fine if it turns black gradually, or even all at once.
+--
+ZH: 聽講你女神又#收兵 喇，你仲唔去拎form入伍？
+EN: Your crush is recruiting "gun jam bing". Do you get the form to join?
+TGT: I heard your crush is looking for a partner, are you going to get the form to apply?
+--
+ZH: 唉，把鬼呀！
+EN: Agh, what a bad one this is!
+TGT: What a terrible thing this is!
+--
+ZH: 啲麪漲咗就唔好食架喇。
+EN: Noodles do not taste good if they rise.
+TGT: Noodles don't taste good if they overcook.
+--
+ZH: 呢個設計好行囉，改改佢得唔得。
+EN: The design doesn't seem to be done seriously. Can you make some changes to it?
+TGT: This design seems casual. Can you modify it?
+--
+ZH: 我哋應該盡力將我哋連日以嚟嘅研究成果發揚光大。
+EN: We should try our best to develop and promote our findings established from many days of research.
+TGT: We should make the most of our research results.
+--
+ZH: 叫咗你唔好咁大聲講嘢㗎啦！而家俾人趕走喇，幾面懵呢！
+EN: I've told you to speak softly. Now that we've been kicked out, I feel so embarrassed!
+TGT: I told you to speak softly. Now I'm so embarrassed!
+--
+ZH: 讀多啲書揾份好工，包你錢途一片光明
+EN: Reading more books and finding a good job will help you get more chance to earn money in your future.
+TGT: Reading more books and getting a good job will increase your chances of financial success.
+--
+ZH: 呢個商場係好多居民返屋企嘅必經之路，有好有唔好囉。
+EN: This shopping centre is the only way that many residents has to go through to go back home. There are some benefits but also some inconvenience of it.
+TGT: This shopping centre is a necessary path for many residents to go home, with its advantages and disadvantages.
+--
+ZH: 你都算奸囉，插贓啲毒品嚮佢架車度，等佢畀差佬拉。
+EN: Planting drugs in his car to get him arrested, that's a really wicked plan you got here.
+TGT: You're quite cunning, planting drugs in his car to get him arrested by the police.
+--
+ZH: 呢個group有幾個膽。
+EN: In this group there are some people who always showed up.
+TGT: There are some people in this group who always show up.
+--
+ZH: 你著得好MK，連個頭都勁MK。
+EN: You dress so MK, and even your hair too.
+TGT: You dress so stylishly, even your hair looks great.
+--
+ZH: 難得有情人，相愛相親
+EN: It's hard to have a lover. Let's love each other.
+TGT: It's not easy to find true love, let's cherish each other.
+--
+ZH: 讀 BBA 前途一片光明。
+EN: A bright future is guaranteed after finishing BBA training.
+TGT: A BBA typically leads to promising career prospects.
+--
+ZH: 而家去蘭桂坊好難揾食㗎，好多女仔都淨係中意白種人。
+EN: Nowadays it is very hard to hook up in Lan Kwai Fong, many girls are only into white guys.
+TGT: Nowadays it's difficult to find a partner in Lan Kwai Fong, many girls seem to prefer only white men.
+--
+ZH: 哎吔！冇喇，今鋪見財化水，重輸清光添啊！
+EN: Oh my, no! I couldn't earn any this time and even lost all my money!
+TGT: Oh my, no! This time, I didn't earn anything and lost all my money!
+--
+ZH: 感情問題一律建議分手。
+EN: I recommend breaking up for all problems involving romantic relationships.
+TGT: I generally recommend breaking up for any relationship issues.
+--
+ZH: 小明一直唔開心都唔係辦法，不如就由我地去打開佢嘅心窗，氹佢開心？
+EN: It is not good for Siu-ming being depressed all the time, why don't we go and open up his heart to cheer him up?
+TGT: Siu-ming's constant unhappiness isn't good. Why not try to make him happier?
+--
+ZH: 你講嘢太掘喇，你下次同客講嘢要圓滑啲。
+EN: You were too straightforward. Next time you should say that with tact to the customers.
+TGT: You were too blunt. Next time, try to be more diplomatic with customers.
+--
+ZH: 佢個人好鬼木獨，叫佢上台講兩句嘢，佢就呆咗喺度粒聲唔出。
+EN: He's absolutely brain-dead. I told him to speak a few words on stage, but he just stood there silently like a moron.
+TGT: He's absolutely out of it. I told him to say a few words on stage, but he just stood there silently.
+--
+ZH: 小心佢整件杰嘅過你嘆。
+EN: Be careful, he may give you something tricky to handle.
+TGT: Be careful, he might trick you with something.
+--
+ZH: 啲水響個水樽入邊𠺘下𠺘下。
+EN: Water is swilling inside the water bottle.
+TGT: There is water swirling inside the water bottle.
+--
+ZH: 呢條詞條寫到噉嘅樣，執下佢啦。
+EN: This entry is written in the non-preferred way. Improve it.
+TGT: This entry needs to be corrected.
+--
+ZH: 唔好成日踢個籃球啦，好易搞到個波生仔㗎。
+EN: Don't be kicking the basketball, it's going to get all lumpy.
+TGT: Don't kick the basketball so often, it can easily get damaged.
+--
+
+================================================================================
+correction_plain  (n=21623)
+================================================================================
+ZH: 阿女你成日著到咁哩啡執都唔執吓，邊有男仔會鍾意你呀？
+EN: My girl, the clothes you wear are sloppy and you're not even trying to tidy up at all, how come there will be boys who like you?
+TGT: Dear girl, it might help to tidy up your appearance a bit more; that way, you may attract more boys.
+--
+ZH: 逐漸變黑又得，立即變黑晒亦得，得咗。
+EN: (Your hair) can turn black gradually or right away. OK. (from an advertisement about a hair dyeing product, which is well known in Hong Kong)
+TGT: It's fine if it turns black gradually or all at once.
+--
+ZH: 喂！周圍咁多人你轉身小心啲得唔得呀？嗰下無情力撞到個細路瞓低喇。
+EN: Hey! Why were you so careless when you turned around in the crowd? With that unintentional force, that kid was hit down.
+TGT: Hey, be careful when you turn around in the crowd. Accidentally knocked over that kid with your unintentional force.
+--
+ZH: 聽講你女神又#收兵 喇，你仲唔去拎form入伍？
+EN: Your crush is recruiting "gun jam bing". Do you get the form to join?
+TGT: Did you hear that your crush is drafting? Are you planning to enlist?
+--
+ZH: 佢哋兩個日日都撐抬腳，十成十係有路定啦。
+EN: The two of them dine together every day. They must have an affair.
+TGT: They always eat together; they must have something going on.
+--
+ZH: 件衫咁巢𠵼𠵼嘅，拎去燙下啦。
+EN: You should iron this crumpled shirt.
+TGT: You should iron this very wrinkled shirt.
+--
+ZH: 呢種級數嘅女仔，你成世都溝唔到架喇。
+EN: Women of that class, men like you would never win their hearts.
+TGT: Women of that class are way out of your league, men like you stand no chance with them.
+--
+ZH: 淨飲得喇，我頭先食咗嘢。
+EN: Just drink is fine, as I have already eaten.
+TGT: Drinking only is fine, as I've already eaten something.
+--
+ZH: 唉，把鬼呀！
+EN: Agh, what a bad one this is!
+TGT: Oh, what a bad one this is!
+--
+ZH: 啲麪漲咗就唔好食架喇。
+EN: Noodles do not taste good if they rise.
+TGT: Noodles that have risen do not taste good.
+--
+ZH: 我霎時間記唔起佢係邊個。
+EN: I don't recall him in an instant.
+TGT: I can't recall who he is immediately.
+--
+ZH: 呢個設計好行囉，改改佢得唔得。
+EN: The design doesn't seem to be done seriously. Can you make some changes to it?
+TGT: This design seems quite good, can you make some changes to it?
+--
+ZH: 我哋應該盡力將我哋連日以嚟嘅研究成果發揚光大。
+EN: We should try our best to develop and promote our findings established from many days of research.
+TGT: We should strive to develop and share the results of our research.
+--
+ZH: 叫咗你唔好咁大聲講嘢㗎啦！而家俾人趕走喇，幾面懵呢！
+EN: I've told you to speak softly. Now that we've been kicked out, I feel so embarrassed!
+TGT: I told you to speak softly. Now we've been kicked out, I'm so embarrassed!
+--
+ZH: 讀多啲書揾份好工，包你錢途一片光明
+EN: Reading more books and finding a good job will help you get more chance to earn money in your future.
+TGT: Reading more books and securing a good job will increase your chances of financial success.
+--
+ZH: 呢個商場係好多居民返屋企嘅必經之路，有好有唔好囉。
+EN: This shopping centre is the only way that many residents has to go through to go back home. There are some benefits but also some inconvenience of it.
+TGT: This shopping center is the only way that many residents have to pass through on their way home. It has both advantages and disadvantages.
+--
+ZH: 做乜格式化咗我隻USB手指啊？我入便啲資料有用㗎！
+EN: Why did you format my USB drive? My data inside is in need!
+TGT: Why did you format my USB drive? I need the data inside!
+--
+ZH: 我間中都會飲吓酒㗎。
+EN: I will drink sometimes.
+TGT: I drink occasionally.
+--
+ZH: 咁我哋就要去meet返佢哋嗰邊個要求。
+EN: We then need to meet their requirement.
+TGT: Then we will have to fulfill their requirements.
+--
+ZH: 個售貨員喺度解説緊件產品嘅功能。
+EN: The salesperson is at introducing the functions of the product.
+TGT: The salesperson is explaining the product's functions.
+--
+ZH: 你都算奸囉，插贓啲毒品嚮佢架車度，等佢畀差佬拉。
+EN: Planting drugs in his car to get him arrested, that's a really wicked plan you got here.
+TGT: Planting drugs in his car to get him arrested, that's a really devious plan.
+--
+ZH: A. #癩蝦蟆想食天鵝肉
+EN: (of an ugly guy) to fantasize about a girl out of his league; literally: a skin-diseased toad wants to eat swan meat
+TGT: An unattractive man who dreams of dating someone out of his league.
+--
+ZH: 呢個group有幾個膽。
+EN: In this group there are some people who always showed up.
+TGT: Some people in this group always show up.
+--
+ZH: 你著得好MK，連個頭都勁MK。
+EN: You dress so MK, and even your hair too.
+TGT: You're dressed so MK, even your hair screams MK.
+--
+ZH: 難得有情人，相愛相親
+EN: It's hard to have a lover. Let's love each other.
+TGT: Finding true love is rare; let's cherish each other.
+--
+
+================================================================================
+identity  (n=312)
+================================================================================
+ZH: 你有冇女？
+EN: Do you have a girlfriend?
+TGT: Do you have a girlfriend?
+--
+ZH: 「唔該俾碗周打我吖！」
+EN: Can I have a bowl of chowder, please?
+TGT: Can I have a bowl of chowder, please?
+--
+ZH: 佢好耐心噉教我。
+EN: He teaches me very patiently.
+TGT: He teaches me very patiently.
+--
+ZH: 個女囈我買個公仔俾佢。
+EN: My daughter begged me to buy a doll for her.
+TGT: My daughter begged me to buy a doll for her.
+--
+ZH: 呢條鏈好考究。
+EN: This necklace is exquisite.
+TGT: This necklace is exquisite.
+--
+ZH: 你大個咗想做咩？
+EN: What do you want to be when you grow up?
+TGT: What do you want to be when you grow up?
+--
+ZH: 小蜜蜂，嗡嗡嗡（廣東話童謠）
+EN: little bee; buzz buzz buzz (Cantonese nursery rhyme)
+TGT: little bee; buzz buzz buzz (Cantonese nursery rhyme)
+--
+ZH: 教堂冇人。
+EN: There is nobody in the church.
+TGT: There is nobody in the church.
+--
+ZH: 佢同佢阿媽生得一模一樣。
+EN: She is the spitting image of her mother.
+TGT: She is the spitting image of her mother.
+--
+ZH: 你知唔知道佢係邊個？
+EN: Do you know who he is?
+TGT: Do you know who he is?
+--
+ZH: 淨低三支筆。
+EN: There are only three pens left.
+TGT: There are only three pens left.
+--
+ZH: 見到叔叔都唔叫人，冇規冇矩！
+EN: Why didn't you greet your uncle? Mind your manners!
+TGT: Why didn't you greet your uncle? Mind your manners!
+--
+ZH: 隻 game 畫質麻麻。
+EN: This game has mediocre graphics.
+TGT: This game has mediocre graphics.
+--
+ZH: G. #舍監 每晚都會巡視宿舍。
+EN: The warden will inspect the dormitory every night.
+TGT: The warden will inspect the dormitory every night.
+--
+ZH: 你有冇事呀？
+EN: Are you all right?
+TGT: Are you all right?
+--
+ZH: 樓下好多人呀。
+EN: There are many people downstairs.
+TGT: There are many people downstairs.
+--
+ZH: 呢張枱夠唔夠位擺BB櫈呀？
+EN: Is there enough space for a baby chair at this table?
+TGT: Is there enough space for a baby chair at this table?
+--
+ZH: 將啲學生分成兩邊。
+EN: Split the students into two groups.
+TGT: Split the students into two groups.
+--
+ZH: 我好擔憂聽日嘅考試。
+EN: I'm worried about tomorrow's exam.
+TGT: I'm worried about tomorrow's exam.
+--
+ZH: 呢隻布料嘅質感唔錯。
+EN: The texture of this fabric feels nice.
+TGT: The texture of this fabric feels nice.
+--
+ZH: 屍體被發現時赤裸上身。
+EN: The corpse was found naked from the waist up.
+TGT: The corpse was found naked from the waist up.
+--
+ZH: 呢個組織暗中支持佢哋嘅活動。
+EN: This organisation supports their activities in secret.
+TGT: This organisation supports their activities in secret.
+--
+ZH: 喂你講下理好喎。
+EN: Please be reasonable.
+TGT: Please be reasonable.
+--
+ZH: 佢對你梗係有意思㗎啦。
+EN: He definitely has feelings for you.
+TGT: He definitely has feelings for you.
+--
+ZH: 咪住！等埋我先！
+EN: Stop! Wait for me!
+TGT: Stop! Wait for me!
+--
