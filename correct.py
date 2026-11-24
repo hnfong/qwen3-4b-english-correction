@@ -14,7 +14,8 @@ from qwen3 import Qwen3, Config, Tokenizer, build_prompt, user_content
 
 def main():
     ap = argparse.ArgumentParser(description="English sentence corrector (Qwen3-4B + LoRA, tinygrad)")
-    ap.add_argument("sentence", help="English sentence to correct")
+    ap.add_argument("sentence", nargs="?", default=None,
+                    help="English sentence to correct; omit to enter interactive mode")
     ap.add_argument("--cantonese", default=None, help="optional Cantonese reference meaning")
     ap.add_argument("--model", default="models/qwen3-4b-instruct")
     ap.add_argument("--adapter", default="out/lora_r16a/best")
@@ -34,11 +35,29 @@ def main():
         load_state_dict(model, sd, strict=False)
         model.merge_loras()
 
-    prompt = build_prompt(user_content(args.sentence, args.cantonese))
-    ids = tok.encode(prompt)
-    out = model.generate(ids, max_new=args.max_new, temperature=args.temperature)
-    text = tok.decode(out).split("\n")[0].strip()
-    print(text)
+    if args.sentence:
+        prompt = build_prompt(user_content(args.sentence, args.cantonese))
+        ids = tok.encode(prompt)
+        out = model.generate(ids, max_new=args.max_new, temperature=args.temperature)
+        text = tok.decode(out).split("\n")[0].strip()
+        print(text)
+    else:
+        def ask(p):
+            try: return input(p)
+            except EOFError: return None
+        while True:
+            sentence = ask("English: ")
+            if sentence is None: break
+            cantonese = ask("Cantonese: ")
+            if cantonese is None: break
+            if not sentence and not cantonese: break
+            prompt = build_prompt(user_content(sentence, cantonese))
+            ids = tok.encode(prompt)
+            out = model.generate(ids, max_new=args.max_new, temperature=args.temperature)
+            text = tok.decode(out).split("\n")[0].strip()
+            print("=>", text)
+
+
 
 if __name__ == "__main__":
     main()
