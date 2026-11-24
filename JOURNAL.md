@@ -48,3 +48,15 @@ best-checkpoint selection by val loss are correct).
 
 **Next**: finish eval report rerun (scripts/eval_synth.py report writer fixed),
 P6 CLI deliverable (correct.py drafted), README, final commits.
+
+## 2024-11-24 (night) — Clean-clone reproducibility verified
+
+- Added scripts/setup.sh (venv + deps + HF weight download + dataset build) and
+  scripts/download_model.sh; committed the trained adapter (out/lora_r16a/best,
+  126 MB, force-added past the out/ ignore).
+- Tested an actual `git clone` into tmp/clean_clone: setup.sh ran end-to-end
+  (downloaded 7.5 GB from HF), correct.py produced the right correction (21.9 s),
+  and rebuilding the dataset from raw_data gave a BYTE-IDENTICAL train.jsonl
+  (md5 6cebde93...). So: runtime + data pipeline fully reproducible; retraining
+  is seeded but not bit-reproducible (driver restart timing shifts the shuffle
+  sequence) — quality-wise it converges to the same behavior.
