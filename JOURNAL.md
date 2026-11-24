@@ -82,3 +82,19 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
   GitHub-clone smoke test (passes: setup.sh + correct.py with adapter supplied).
 - Push instructions + open questions (license, HF repo name) in
   QUESTIONS_FOR_USER.md #7.
+
+## 2024-11-25 (later) — license, rename, HF push blocked on token scope
+
+- LICENSE: canonical Apache-2.0 text downloaded from apache.org into repo root
+  + hf_repo/. User confirmed license choice.
+- Rename per user: qwen3-4b-english-correction (HF), qwen-small-english-correction
+  (GitHub, remote pending). Model card + README updated.
+- correct.py: user's interactive-REPL change committed with argparse wiring
+  (nargs="?") + EOF guard.
+- **HF push attempted, blocked**: token is fine-grained READ-ONLY
+  (repo.content.read). create_repo -> 403; git ls-remote -> "Repository not
+  found". User must add repo.content.write to the token (or pre-create the repo
+  + grant write), then `bash scripts/hf_push.sh` (runtime-token push, scrubs
+  token from .git/config after).
+- PEFT conversion verified again end-to-end; hf_repo commit history clean (2
+  commits, LFS objects stored).
