@@ -145,3 +145,24 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
 - Both GGUFs live: f16 8.05 GB + q8_0 4.28 GB. Also: `git reset --hard` after
   committing new files deletes those files from the worktree (lost the f16 copy
   in hf_repo/, source of truth survived in models/).
+
+## 2025-11-25 (latest) — Qwen3-1.7B experiment (branch qwen17b-experiment, merged)
+
+- Same pipeline retrained on Qwen/Qwen3-1.7B (hybrid-thinking variant; no 2507
+  refresh exists for this size). NO code forks needed: Config.from_hf reads the
+  smaller arch (2048/28L/16H/8KV) generically; driver/eval parameterized
+  (MODEL env, --max-new). Branch merged to main after verification.
+- Gotchas: (1) base 1.7B emits <arg_key>...</think> traces — correct.py/eval now strip a
+  leading think block generically (regex fixed by user; note: literal
+  think-tag strings in shell heredocs get mangled by tooling — build them by
+  concatenation or edit files directly). (2) export_merged.py tensor-count
+  assert was 4B-hardcoded -> n_layers*11+2. (3) baseline eval for a thinking
+  model is invalid-by-design (user decision): outputs are just the think-open
+  token; NOT fixed by design — training itself teaches direct answers.
+- Training: restart driver, ~25 steps, best val 0.77 (4B: 0.88 on same data).
+- Eval: 14/14 cases pass, no thinking leakage. One nuance: "I have saw" ->
+  "I have seen ... last week" (4B produced the cleaner "I saw").
+- llama.cpp verified on both f16 + q8_0 GGUFs (merged in our stack as before).
+- Published to HF repo alongside 4B: qwen3-1.7b/ PEFT subfolder,
+  qwen3-1.7b-english-correction-{f16,q8_0}.gguf; model card section added.
+- GitHub: branch qwen17b-experiment pushed + merged to main (11eb687).
