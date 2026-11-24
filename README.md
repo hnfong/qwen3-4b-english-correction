@@ -36,10 +36,13 @@ LoRA adapter used: `out/lora_r16a/best` (override with `--adapter`).
    tied embeddings) implemented in tinygrad, **validated exactly against HF
    transformers** (tmp/validate_qwen3.py). LoRA r=16 α=32 on all attention + MLP
    projections. Jitted decode + chunked prefill for speed.
-3. **Training** (`scripts/train_lora.py` + `tmp/train_driver.sh`): masked-loss SFT
-   (completion only), AdamW, fp16 base weights. macOS GPU-watchdog mitigations
-   required (see JOURNAL.md): per-kernel submission pacing, one micro-batch per
-   step, restart-loop driver (~45 steps, val loss 2.0 → 0.88).
+3. **Training** (`scripts/train_lora.py` + `scripts/train_driver.sh`): masked-loss
+   SFT (completion only), AdamW, fp16 base weights. The training order is a
+   canonical one-time shuffle (`scripts/shuffle_train.py` →
+   `tmp/train_shuffled.jsonl`) consumed **sequentially via a cursor** stored in
+   the checkpoint — the restart-loop driver (macOS GPU-watchdog mitigation, see
+   JOURNAL.md) resumes exactly where it left off, never replaying data.
+   4B v2: 440 unique examples (0.66% of 66k), val loss 2.25 → 0.75.
 4. **Eval** (`scripts/eval_synth.py` → `out/eval_report.txt`): 14 synthetic cases —
    all pass, including identity behavior on already-correct input.
 
