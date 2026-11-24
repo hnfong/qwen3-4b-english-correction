@@ -14,7 +14,7 @@ FP16 = os.environ.get('TRAIN_FP16', '1') == '1'
 
 from tinygrad import Tensor, dtypes, nn, Device
 from tinygrad.helpers import Context, TRAINING
-from tinygrad.nn.state import safe_save, get_state_dict
+from tinygrad.nn.state import safe_save, get_state_dict, safe_load, load_state_dict
 import tinygrad.runtime.ops_metal as _om
 if PACE_S > 0:
     _orig_metal_call = _om.MetalProgram.__call__
@@ -54,7 +54,7 @@ def forward_loss(model, toks_t, labs_t):
     logits = model.forward_train(toks_t)  # (B,T,V) fp32
     return logits.sparse_categorical_crossentropy(labs_t, ignore_index=-100)
 
-def val_loss(model, batches, max_batches=25):
+def val_loss(model, batches, max_batches=8):
     tot, n = 0.0, 0
     for toks, labs in batches[:max_batches]:
         l = forward_loss(model, Tensor(toks, dtype=dtypes.int32), Tensor(labs, dtype=dtypes.int32)).item()
@@ -77,13 +77,15 @@ def main():
     p.add_argument("--alpha", type=float, default=32.0)
     p.add_argument("--lr", type=float, default=1e-4)
     p.add_argument("--batch", type=int, default=4)
-    p.add_argument("--accum", type=int, default=4)
+    p.add_argument("--accum", type=int, default=1, help="keep 1: multi-micro steps trip the macOS GPU watchdog")
     p.add_argument("--seqlen", type=int, default=512)
     p.add_argument("--max-examples", type=int, default=4000)
     p.add_argument("--max-minutes", type=float, default=28.0)
     p.add_argument("--val-every", type=int, default=20)
     p.add_argument("--save-every", type=int, default=50)
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--init-adapter", default=None, help="load adapter.safetensors before training (resume)")
+    p.add_argument("--max-steps", type=int, default=0, help="stop after N optimizer steps (0 = time-bound only)")
     args = p.parse_args()
 
     out = pathlib.Path("out") / f"lora_{args.run}"
@@ -105,6 +107,10 @@ def main():
     if FP16:  # fp16 base weights: Metal tensor-core friendly, halves watchdog pressure
         for k, t in get_state_dict(model).items():
             if 'lora' not in k and t.dtype == dtypes.bfloat16: t.replace(t.cast(dtypes.float16))
+    if args.init_adapter and (pathlib.Path(args.init_adapter) / "adapter.safetensors").exists():
+        sd = {k: v.to(Device.DEFAULT) for k, v in safe_load(f"{args.init_adapter}/adapter.safetensors").items()}
+        load_state_dict(model, sd, strict=False)
+        print(f"resumed adapter from {args.init_adapter}", flush=True)
     params = model.lora_params()
     n_lora = sum(p.numel() for p in params)
     print(f"LoRA r={args.lora_r} alpha={args.alpha}: {n_lora/1e6:.1f}M params", flush=True)
@@ -132,10 +138,11 @@ def main():
                 for toks, labs in epoch_shuf[i:i + args.accum]:
                     l = forward_loss(model, Tensor(toks, dtype=dtypes.int32), Tensor(labs, dtype=dtypes.int32))
                     loss_vals.append(float(l.item()))  # sync per micro-batch
-                    if PACING_S > 0: time.sleep(PACING_S)
                     grads = l.gradient(*params)
                     if pgrads is None: pgrads = grads
                     else: pgrads = [a + b for a, b in zip(pgrads, grads)]
+                    Tensor.realize(*[g for g in pgrads if g is not None])
+                    Device[Device.DEFAULT].synchronize()  # full sync per micro (watchdog)
                 for pp, g in zip(params, pgrads): pp.grad = g * (1.0 / args.accum)
                 opt.step()
                 for pp in params: pp.grad = None
@@ -158,6 +165,9 @@ def main():
                         save_lora(model, out / "best", {"step": step, "val_loss": vl, "args": vars(args)})
                 if step % args.save_every == 0:
                     save_lora(model, out / f"step{step}", {"step": step, "args": vars(args)})
+                save_lora(model, out / "last", {"step": step, "args": vars(args)})
+                if args.max_steps and step >= args.max_steps:
+                    done = True; break
 
     save_lora(model, out / "last", {"step": step, "args": vars(args)})
     (out / "history.json").write_text(json.dumps({"loss": hist[::5], "best_val": best_val, "steps": step}))

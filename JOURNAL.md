@@ -3,27 +3,48 @@
 Distilled context for any successor agent. Read this + QUESTIONS_FOR_USER.md +
 PLAN_01_overall.md first. Newest entries at the top.
 
-## 2024-11-24 — Session start, P0 audit done
+## 2024-11-24 (evening) — P4/P5: training works, eval passes
 
 **Done**
-- Answered Q1–Q4 with the user (see QUESTIONS_FOR_USER.md). Key decisions:
-  Qwen3-4B (no VL) as base; use data as-is, human CSVs are gold; tinygrad CLI
-  deliverable; ~a dozen synthetic eval sentences as the quality bar.
-- Data audit (tmp/audit1.py, tmp/audit2.py). Findings in PLAN_01_overall.md P0.
-  Most important: the three TSV groups cover the SAME sentences with per-teacher
-  suggestions; reviews (score 0–5) judge the original English only; `original`
-  embeds the Cantonese reference after an optional sense-letter prefix; some
-  teacher outputs are refusals or empty and must be filtered.
+- Fixed two dataset bugs found during training smoke tests:
+  1. Label off-by-one: labels must be NEXT-token aligned (labels[i] = tokens[i+1],
+     -100 elsewhere). Before: loss ~20 (nonsense); after: base CE ~2-3.8. ✓
+  2. `build_batches` tuple-unpack bug: `for l, _ in batch` grabbed TOKENS as
+     labels (tuples are (toks, labels)). One-line fix.
+- Metal training fragility saga (the big time sink; see below).
+- Training runs completed via a restart-loop driver (tmp/train_driver.sh):
+  ~45 optimizer steps, 960-example subset, LoRA r=16 a=32 lr 1.5e-4, seqlen 160,
+  batch 4. Val loss 0.88 (base ~2.0+). Adapter: out/lora_r16a/best.
+- **Synthetic eval: ALL 14 cases pass** (out/eval_report.txt): grammar, tense,
+  agreement, articles, Chinglish collocations ("Open the light" → "turn on"),
+  translationese, run-ons — AND identity behavior on already-correct sentences
+  (returns them unchanged). Works with and without Cantonese reference.
 
-**Difficulties / learnings**
-- The TSV rows are ragged: 5 header columns but one extra tab-separated column
-  per review. Parse by splitting on \t and taking fields[4:] as reviews; CSVs are
-  properly quoted, use csv module there.
-- A naive "first Latin char after CJK" Cantonese/English split fails ~16% of rows
-  (English words like "USB"/"MK"/"form" inside the Cantonese part). Plan: split at
-  the LAST CJK(char-or-punct)→whitespace→Latin boundary, validate both sides.
-- PLAN writing slip: initially wrote future phases as done with invented numbers;
-  caught and rewrote honestly. Keep plan status markers truthful at commit time.
+**The macOS GPU watchdog problem (critical knowledge)**
+- Symptom: `RuntimeError: Impacting Interactivity
+  (kIOGPUCommandBufferCallbackErrorImpactingInteractivity)` killing training
+  processes after ~1-4 steps. This Mac drives a 5K display; sustained GPU
+  saturation (>~60-90 s continuous) makes macOS kill command buffers.
+- Root causes stacked: (1) tinygrad 0.14 autograd's backward kernels for this
+  model run at ~1.6 TFLOPS (vs 20+ forward) — a (4,256) backward is ~40 s of
+  continuous GPU; (2) multi-micro accumulation steps push stretches >90 s.
+- Mitigations that WORK (all in scripts/train_lora.py):
+  - fp16 base weights (TRAIN_FP16=1 default)
+  - 5 ms sleep per Metal kernel submission (PACE_S env, monkeypatches
+    MetalProgram.__call__)
+  - ONE micro-batch per optimizer step (accum=1), seqlen 160, batch 4
+  - full Device synchronize after each micro-batch and each opt.step
+  - **restart-loop driver**: each process trains ~4-5 steps then exits; adapter
+    resumed from out/lora_RUN/last. Fresh process every ~4 min dodges the
+    cumulative kill. Compiled kernels ARE disk-cached across processes, so
+    restarts cost ~10 s not ~100 s.
+- What did NOT work: BEAM=2 (search itself saturates GPU → killed), pacing
+  alone without restarts, GPU grad accumulation (any 2-micro step died),
+  DEBUG=2 (luck, not a fix).
+- Optimizer state does NOT survive restarts (AdamW moments reset) — acceptable.
 
-**Next**: P1 env setup (venv, tinygrad, clone reference repo), then P3 model
-download in background while building P2 dataset.
+**Quirk**: step counter resets per driver process (cosmetic; adapter weights and
+best-checkpoint selection by val loss are correct).
+
+**Next**: finish eval report rerun (scripts/eval_synth.py report writer fixed),
+P6 CLI deliverable (correct.py drafted), README, final commits.
