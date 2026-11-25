@@ -25,6 +25,8 @@ single purpose: correct potentially badly written English sentences.
   There is a python installed but you probably want to set up a custom python
   env suitable for your work in this repo.
 
+( OLD )
+
 # Acceptance Criteria
 
 - A model based on Qwen3.5-4B I can run where, I input an English sentence
@@ -43,6 +45,44 @@ single purpose: correct potentially badly written English sentences.
 - Use https://github.com/tinygrad/tinygrad as our ML framework.
   - There are examples in https://github.com/tinygrad/tinygrad/tree/master/examples in case you need help on how to use the framework.
 
+( END OF OLD )
+
+( UPDATED Wed 25 Nov 2026 13:03:21 HKT )
+
+# Acceptance Criteria
+
+- A model based on Qwen3-1.7B and Qwen3-0.6B I can run where, I input an English sentence
+  (together with optional Cantonese reference meaning), and it outputs a
+  corrected version (or the original if correct).
+  - The model must be trained with at least half the data in raw_data/  (yes, I
+    know it's quite a lot.)
+
+- You may design a prompt template to encode the input/output before feeding to
+  the LLM.
+
+- Do not stop before acceptance criteria is met. For questions to users, see
+  QUESTIONS_FOR_USER.md below.
+
+
+# Technology
+
+- Use MLX as our ML framework.
+  - Port the existing tinygrad code to MLX
+  - Remove the workarounds for kIOGPUCommandBufferCallbackErrorImpactingInteractivity (see JOURNAL.md)
+  - No legacy compatibility required, final result does not require any reference to tinygrad.
+
+- Instead of LoRA, train the models fully
+
+- Train with all valid data in raw_data/ -- given the models are small and
+  presumably the base models do not know much Cantonese, we want to use this
+  opportunity to also improve the model's understanding of basic Cantonese.
+  - I suspect training first on the machine generated data ( \*.tsv ) first,
+    then on the \*.tsv.csv (human reviewed/curated) data will be good.
+  - Given change in training tactics, the learning rate may need to be
+    adjusted. (I have no idea what values are good. Determine a good one
+    yourself).
+
+
 # Protocol
 
 - You are allowed to download/install software on within this
@@ -54,6 +94,9 @@ single purpose: correct potentially badly written English sentences.
   from the web. Also to download models from huggingface. Also to download code
   (either to use or to read) from github. You are not allowed to access the
   network for any other purpose.
+
+  - Update: you may push to github and huggingface to publish the code and
+    model for this project.
 
 - The user is away. For any decision you would normally ask the user, make a
   reasonable decision first, document the decision/question in
