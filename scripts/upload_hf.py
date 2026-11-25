@@ -16,7 +16,7 @@ Usage:
 """
 import argparse, os, pathlib, sys
 
-DEFAULT_REPO = "sydneyfong/qwen3-4b-english-correction"
+DEFAULT_REPO = "sydneyfong/qwen3-english-correction"
 TOKEN_PATH = pathlib.Path.home() / ".cache" / "huggingface" / "token"
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 

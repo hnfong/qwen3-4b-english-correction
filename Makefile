@@ -13,7 +13,7 @@
 #   crashes, rerun `make train` — stages resume from their last checkpoint.
 # - To force a fresh retrain: rm -rf out/mlx-$(NAME)-s1 out/mlx-$(NAME)-s2 $(FUSED)
 
-BASE_MODEL ?= Qwen/Qwen3-0.6B
+BASE_MODEL ?= Qwen/Qwen3-4B
 
 NAME      := $(shell echo $(notdir $(BASE_MODEL)) | tr 'A-Z' 'a-z')
 MODEL_DIR := models/$(NAME)

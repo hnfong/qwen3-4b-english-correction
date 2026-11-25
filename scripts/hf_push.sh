@@ -1,5 +1,5 @@
 #!/bin/bash
-# Push hf_repo/ to https://huggingface.co/sydneyfong/qwen3-4b-english-correction
+# Push hf_repo/ to https://huggingface.co/sydneyfong/qwen3-english-correction
 # Reads the HF token from ~/.cache/huggingface/token at runtime (never stored).
 # Requires a token WITH write access (fine-grained: repo.content.write on the
 # user namespace, or a classic "write" token).
@@ -7,7 +7,7 @@ set -e
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT/hf_repo"
 TOKEN=$(cat ~/.cache/huggingface/token)
-REPO=sydneyfong/qwen3-4b-english-correction
+REPO=sydneyfong/qwen3-english-correction
 
 "$ROOT/.venv/bin/python" - <<EOF
 from huggingface_hub import HfApi

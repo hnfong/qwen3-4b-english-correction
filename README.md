@@ -1,4 +1,4 @@
-# qwen3-4b-english-correction
+# qwen3-english-correction
 
 (This is purely vibe coded, with sparse directions and steering from me. I do
 not take any moral responsibility for anything in this repo.)
@@ -20,7 +20,7 @@ EN: The quick brown fox jumps over the lazy dog. → (unchanged)
 ```
 
 Models are published on Hugging Face:
-`sydneyfong/qwen3-4b-english-correction` → `qwen3-1.7b-full/`, `qwen3-0.6b-full/`
+`sydneyfong/qwen3-english-correction` → `qwen3-1.7b-full/`, `qwen3-0.6b-full/`
 (HF format) and `qwen3-1.7b-english-correction-{f16,q8_0}.gguf`,
 `qwen3-0.6b-english-correction-{f16,q8_0}.gguf` (llama.cpp).
 

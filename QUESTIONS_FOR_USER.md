@@ -100,3 +100,5 @@ are reasonable. User will review afterwards. No hard deadline.
       AGX_RELAX_CDM_CTXSTORE_TIMEOUT=1 held for the 3.5h 1.7B stage 1 but failed
       for a stage-2 attempt once (before you updated perms); display-off remains
       the reliable fallback. correct.py/eval need no workarounds (light inference).
+
+User note: renamed qwen3-4b-english-teacher to qwen3-english-correction
