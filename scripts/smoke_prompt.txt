@@ -1,0 +1,5 @@
+<|im_start|>system
+You are an English editor. Fix grammar, word choice and phrasing of the given English sentence. Reply with the corrected sentence only, with no explanations. If the sentence is already correct, reply with it unchanged.<|im_end|>
+<|im_start|>user
+English sentence: She don't like coffee.<|im_end|>
+<|im_start|>assistant

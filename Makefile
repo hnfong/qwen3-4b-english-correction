@@ -71,3 +71,24 @@ eval: $(FUSED)/.done
 
 interactive: $(FUSED)/.done
 	$(PY) correct.py --model $(FUSED)
+
+# llama.cpp binaries (for quantize + smoke test)
+LLAMA_DIR ?= $(HOME)/projects/llama.gguf
+
+tmp/llama.cpp/.git:
+	git clone -q --depth 1 https://github.com/ggml-org/llama.cpp $@
+
+tmp/torch_venv/bin/python:
+	python3.12 -m venv tmp/torch_venv
+	tmp/torch_venv/bin/pip install -q torch transformers gguf sentencepiece
+
+models/$(NAME)-english-correction-f16.gguf: $(FUSED)/.done tmp/llama.cpp/.git tmp/torch_venv/bin/python
+	tmp/torch_venv/bin/python tmp/llama.cpp/convert_hf_to_gguf.py $(FUSED) --outfile $@ --outtype f16
+
+# quantize + smoke test: expect a corrected sentence, no think blocks
+models/$(NAME)-english-correction-q8_0.gguf: models/$(NAME)-english-correction-f16.gguf
+	$(LLAMA_DIR)/llama-quantize $< $@ q8_0
+	@echo "--- smoke test ---"
+	@$(LLAMA_DIR)/llama-completion -m $@ -f scripts/smoke_prompt.txt --temp 0 -n 60 --no-display-prompt < /dev/null 2>/dev/null
+
+gguf: models/$(NAME)-english-correction-q8_0.gguf models/$(NAME)-english-correction-f16.gguf
