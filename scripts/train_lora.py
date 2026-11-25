@@ -166,8 +166,9 @@ def main():
                     best_val = vl
                     save_lora(model, out / "best", {"step": step, "cursor": offset + consumed,
                                                     "val_loss": vl, "args": vars(args)})
-            save_lora(model, out / "last", {"step": step, "cursor": offset + consumed,
-                                            "loss": lv, "args": vars(args)})
+            if step % 2 == 0:  # 132 MB write per step is ~half the step cost; 2-step cursor granularity is fine
+                save_lora(model, out / "last", {"step": step, "cursor": offset + consumed,
+                                                "loss": lv, "args": vars(args)})
 
     save_lora(model, out / "last", {"step": step, "cursor": offset + consumed, "args": vars(args)})
     (out / "history.json").write_text(json.dumps({"loss": hist[::5], "best_val": best_val, "steps": step}))
