@@ -83,7 +83,7 @@ Think tokens: not handled anywhere; the fine-tuned models do not emit them.
 ## Retrain
 
 ```bash
-bash scripts/setup.sh
+make            # sets up venv, downloads weights, builds data, trains, fuses
 .venv/bin/python scripts/prep_mlx_data.py
 # stage 1 (per model):
 .venv/bin/python -m mlx_lm lora --model models/qwen3-1.7b --train \
