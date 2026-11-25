@@ -55,7 +55,8 @@ def main():
         zh = ask("Cantonese: ")
         if zh is None: break
         if not en and not zh: break
-        print("=>", correct(en, zh or None))
+        result = correct(en, zh or None)
+        print("=>", result if result != en else "<OK!>")
 
 if __name__ == "__main__":
     main()

@@ -229,3 +229,24 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
 - 1.7B full FT launched WITH AGX_RELAX_CDM_CTXSTORE_TIMEOUT=1 (user plan: try
   without display-off; defer to display-off if it crashes). ~907 tok/s,
   stage1 ETA ~3.5h.
+
+## 2025-11-25 (night) — 1.7B finished + published; pipeline now MLX-only
+
+- 1.7B stage2 with AGX_RELAX_CDM_CTXSTORE_TIMEOUT=1: PASSED (the earlier
+  finish-script crash was my bug — forgot the env var). Full pipeline chained:
+  stage2 -> fuse -> eval (14/14, "I have saw" -> "I saw" clean fix, identity
+  preserved) -> GGUF f16/q8_0 -> llama.cpp verified.
+- Published to HF: qwen3-1.7b-full/ (7 files incl. think-free chat_template.jinja)
+  + GGUFs (overwrote LoRA-era); superseded qwen3-1.7b/ LoRA subfolder deleted.
+  Same for 0.6B earlier tonight (qwen3-0.6b-full/ + GGUFs).
+- apply_chat_template discovery: Qwen3 template inserts empty <arg_key>...</tool_call> into
+  assistant turns during TRAINING renders — the first full-FT run learned to
+  emit empty think blocks. Fixed by raw-text training data (own rendering).
+  Custom chat_template.jinja shipped (renders exactly the training format,
+  no think logic; whitespace via explicit {{ "\n" }}).
+- Tinygrad-era scripts deleted from main (git history preserves); README
+  rewritten MLX-first. Acceptance criteria (updated): both models runnable,
+  100% of valid data trained (>= 50% required), MLX, full FT, curriculum — ALL MET.
+- mlx_lm gotchas for successors: full FT trains only last --num-layers (default
+  16); generate() takes sampler= not temp=; checkpoint subset = trainable
+  tensors only; fuse applies them correctly (verified tensor-identical).

@@ -32,12 +32,13 @@ CASES = [
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True)
+    ap.add_argument("--adapter-path", default=None)
     ap.add_argument("--out", default="out/eval_report")
     ap.add_argument("--max-tokens", type=int, default=80)
     args = ap.parse_args()
 
     from mlx_lm import load, generate
-    model, tok = load(args.model)
+    model, tok = load(args.model, adapter_path=args.adapter_path)
 
     def gen(en, zh):
         text = generate(model, tok, prompt=build_prompt(en, zh),

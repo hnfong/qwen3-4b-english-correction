@@ -77,3 +77,26 @@ are reasonable. User will review afterwards. No hard deadline.
    rejected a free-text `datasets:` field — removed; data described in prose.
 9. **GitHub repo name noted**: qwen-small-english-correction (per your
    s/teacher/correction). Waiting for the remote from you; local dir kept as-is.
+
+10. **MLX task decisions (per updated AGENTS.md, made autonomously)**:
+    - LR: full-FT 1e-5 (stage 1) / 5e-6 (stage 2 human polish) — 1e-5 was stable
+      and converging for both sizes on the 30-min smoke; LoRA-era 1.5e-4 would be
+      far too hot for full FT.
+    - Data accounting: trained on 100% of the derived data (66,167 pairs from
+      100% of valid raw_data entries) — the ">= half" criterion is met at 100%.
+      Two-stage curriculum as you suggested: stage 1 = 63,951 machine pairs,
+      stage 2 = 2,216 human pairs x 3 epochs at lower LR.
+    - "Improve Cantonese understanding": interpreted as (a) Cantonese reference
+      in every trainable prompt (84.8%; 15.2% deterministically omitted for
+      robustness) and (b) full-sequence loss (prompt tokens train too — the
+      model literally learns the Cantonese->English mapping context).
+    - Loss masking: mlx's CompletionsDataset path mis-masks Qwen3 thinking
+      templates (inserts <arg_key> in the generation prompt); chose full-sequence
+      loss via raw text/messages instead — simpler and serves the Cantonese goal.
+    - The old LoRA artifacts (1.7B/0.6B early snapshots) were REMOVED from HF
+      (superseded by full FT); 4B artifacts untouched. Say the word if you want
+      them restored.
+    - Watchdog: MLX is NOT immune (stage2 crashed twice without mitigation).
+      AGX_RELAX_CDM_CTXSTORE_TIMEOUT=1 held for the 3.5h 1.7B stage 1 but failed
+      for a stage-2 attempt once (before you updated perms); display-off remains
+      the reliable fallback. correct.py/eval need no workarounds (light inference).
