@@ -1,14 +1,13 @@
 # qwen3-english-correction
 
 (This is purely vibe coded, with sparse directions and steering from me. I do
-not take any moral responsibility for anything in this repo.)
+not take any moral responsibility for anything in this repo. There's also a
+short discussion at the end of this README that is written by a human (me).)
 
 Fine-tunes of **Qwen3-1.7B** and **Qwen3-0.6B** that correct badly written English
 sentences — the kind produced by Cantonese L1 speakers editing an English
 dictionary (translationese, grammar slips, Chinglish collocations). Full
-fine-tuning with **MLX** on an M2 Max Mac Studio. (The repo name and the 4B
-artifacts are historical — see the Hugging Face repo; the 4B is not part of the
-current acceptance criteria.)
+fine-tuning with **MLX** on an M2 Max Mac Studio.
 
 Input: an English sentence, plus an *optional* Cantonese reference meaning.
 Output: the corrected sentence — or the original, unchanged, if it is already fine.
@@ -126,3 +125,26 @@ elsewhere. The HF model card lives at `hf_card.md` in this repo.
 - Single-sentence correction only; no document-level editing.
 - 1 epoch over the data; more epochs / data passes would likely improve style
   coverage further.
+
+## Discussion (not AI generated)
+
+- Originally I tested tried doing this with Qwen3-4B-Instruct-2507, but turns
+  out 4B mostly works out of the box without any fine tuning. So I tried
+  smaller models. The 0.6B and 1.7B models were harder to test because they had
+  thinking enabled, so most of the effective training was to make them not
+  think. I'm not sure whether I taught the models any Cantonese at all. The
+  outputs are hit-or-miss, but if you don't look too carefully they're
+  reasonable as long as the model understands the Cantonese/Chinese reference
+  sentences.
+
+- The trained models (especially the 0.6B version) might be useful in
+  environments where computing resources are limited and you don't want to make
+  an API call. Otherwise, just use DeepSeek. (DeepSeek's Cantonese ability and
+  understanding of Hong Kong's internet culture is generally the best among
+  open-weight models.)
+
+- The code/repo assumes you either fine tune Qwen3 0.6B or 1.7B, but 4B works
+  as well. It's just not very meaningful. Maybe later I'll find some evidence
+  that it has learned a bit of Cantonese and hence maybe slightly better for
+  this specific purpose, but the effect is probably small and if you care
+  enough about that... well, just use DeepSeek.
