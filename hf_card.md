@@ -18,6 +18,9 @@ language:
 
 # Qwen3 english-correction (0.6B + 1.7B, full fine-tune)
 
+(This is purely vibe coded, with sparse directions and steering from me. I do
+not take any moral responsibility for anything in this repo.)
+
 **Qwen3-0.6B** and **Qwen3-1.7B**, fully fine-tuned (no LoRA) with **MLX** to
 correct badly written English sentences — the kind produced by Cantonese L1
 speakers editing an English dictionary (translationese, grammar slips, Chinglish
