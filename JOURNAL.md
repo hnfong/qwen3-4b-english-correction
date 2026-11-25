@@ -265,3 +265,16 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
   source of truth (reconcile = fetch + reset if ever needed).
 - Watchdog note: 0.6B stage2 (MLX) crashed once with display on; display-off
   rerun completed clean. 1.7B full pipeline ran with the env var alone.
+
+## 2025-11-25 (cont.) — make gguf + scripts/upload_hf.py
+
+- Makefile: gguf target (f16 convert + self-q8_0 + llama.cpp smoke via
+  scripts/smoke_prompt.txt + LLAMA_DIR var, default ~/projects/llama.gguf).
+  Both 0.6B (user's fresh retrain) and 1.7B smoked + verified.
+- User nuked hf_repo/ + the hub contents; rebuilt the HF repo via
+  HfApi.upload_file (24 files, 11.8 GB, public download verified).
+- New scripts/upload_hf.py: model-agnostic uploader — auto-discovers
+  models/*-english-correction-mlx dirs + ggufs, uploads card (hf_card.md, now
+  a committed file)/LICENSE/data; token from --token/$HF_TOKEN/~/.cache token;
+  --dry-run/--model/--no-data/--repo flags. Hub dedupes identical content
+  ("Skipping to prevent empty commit").

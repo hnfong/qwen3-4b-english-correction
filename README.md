@@ -109,6 +109,15 @@ make            # sets up venv, downloads weights, builds data, trains, fuses
   --adapter-path out/mlx17_s2 --save-path models/qwen3-1.7b-english-correction-mlx
 ```
 
+## Publish
+
+```bash
+.venv/bin/python scripts/upload_hf.py --dry-run   # review the plan
+.venv/bin/python scripts/upload_hf.py             # card, LICENSE, data, models, GGUFs
+```
+Token: `~/.cache/huggingface/token` (or `$HF_TOKEN` / `--token`); never stored
+elsewhere. The HF model card lives at `hf_card.md` in this repo.
+
 ## Known limitations
 
 - The 1.7B/0.6B base models are hybrid-thinking variants; the fine-tuned models
