@@ -76,6 +76,12 @@ Manual equivalents:
    `llama-quantize`. Verified greedy-identical behavior across MLX, HF
    transformers+peft (4B legacy) and llama.cpp.
 
+## GGUF (llama.cpp)
+
+`make gguf` converts the fused model to f16 GGUF, self-quantizes to Q8_0, and
+runs a llama.cpp smoke test (llama binaries in `~/projects/llama.gguf`, override
+with `LLAMA_DIR=...`). Both sizes' GGUFs are on the Hugging Face repo.
+
 ## Eval
 
 14 hand-written synthetic cases (grammar, tense, agreement, articles, Chinglish
