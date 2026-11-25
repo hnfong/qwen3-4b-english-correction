@@ -250,3 +250,18 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
 - mlx_lm gotchas for successors: full FT trains only last --num-layers (default
   16); generate() takes sampler= not temp=; checkpoint subset = trainable
   tensors only; fuse applies them correctly (verified tensor-identical).
+
+## 2025-11-25 (late) — Makefile (train/eval/interactive/gguf), HF repo rebuilt
+
+- User confirmed a fresh 0.6B retrain via the Makefile works.
+- Makefile: BASE_MODEL variable (HF path, drives all derived names); targets
+  train/eval/interactive/gguf; dependency-driven (eval/interactive auto-build
+  the model); stage stamps + --resume-adapter-file give crash-resume;
+  AGX_RELAX_CDM_CTXSTORE_TIMEOUT=1 on training; gguf target = f16 convert +
+  self-q8_0 + llama.cpp smoke test (scripts/smoke_prompt.txt, LLAMA_DIR var).
+- User nuked hf_repo/ + pushed the nuke (hub was empty). Rebuilt the repo via
+  HfApi.upload_file: card, LICENSE, data, both full models, all 4 GGUFs
+  (11.8 GB) — public download verified. Local hf_repo git still stale; hub is
+  source of truth (reconcile = fetch + reset if ever needed).
+- Watchdog note: 0.6B stage2 (MLX) crashed once with display on; display-off
+  rerun completed clean. 1.7B full pipeline ran with the env var alone.
