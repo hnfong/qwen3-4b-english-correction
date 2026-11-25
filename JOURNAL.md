@@ -191,3 +191,41 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
   HfApi.upload_file over git-lfs (git-lfs multi-GB push EOF'd repeatedly).
 - Snapshots cleaned (out/lora_* removed) per user instruction; stale eval
   reports archived in out/archive_pre_cursor/.
+
+## 2025-11-25 (evening) — MLX port (PLAN_02), watchdog strikes again — in MLX
+
+- Updated AGENTS.md (user): acceptance = Qwen3-1.7B + 0.6B, >= half of raw_data,
+  MLX framework (port; remove watchdog workarounds; no tinygrad in final
+  pipeline), FULL fine-tune (no LoRA), all valid data + 2-stage curriculum
+  (machine tsv -> human csv), LR self-determined.
+- 0.6B LoRA experiment wrapped per user ("regardless of quality"): 344 examples,
+  best val 1.14, merged + GGUF pushed to HF as early snapshot, then superseded.
+- MLX env: mlx 0.32.4 / mlx_lm 0.32.2. mlx_lm lora --fine-tune-type full works.
+  Data: scripts/prep_mlx_data.py -> chat 'messages' jsonl... CORRECTED to raw
+  'text' format: apply_chat_template INSERTS an empty <arg_key>...</tool_call> block into
+  assistant turns (Qwen3 template normalizes thinking) — the first full-FT run
+  learned to emit empty think blocks. Rewritten with our own rendering; zero
+  think tokens in the data (assert-checked). USER DIRECTIVE: new code does not
+  handle think tokens at all; base thinking models unsupported at inference —
+  accepted.
+- MLX gotchas: (1) generate()/stream_generate take sampler= (make_sampler),
+  not temp=. (2) full FT via --fine-tune-type full trains only the LAST
+  --num-layers (default 16!) — 176 checkpoint tensors for a 28-layer model.
+  (3) fuse applies full-FT adapters correctly (verified tensor-identical).
+  (4) custom chat_template.jinja written (no think logic; renders exactly our
+  training format; jinja whitespace needs explicit {{ "\n" }}).
+- **WATCHDOG IN MLX**: stage2 (0.6B) crashed with the SAME
+  kIOGPUCommandBufferCallbackErrorImpactingInteractivity. So it was never
+  tinygrad-specific — it's macOS/WindowServer vs sustained Metal load with an
+  active display. USER GUIDANCE (from ml-explore/mlx#3267): display-off is the
+  reliable fix; AGX_RELAX_CDM_CTXSTORE_TIMEOUT=1 necessary-but-maybe-not-
+  sufficient for heavy workloads. pmset displaysleepnow = programmatic display
+  sleep. Correcting the earlier JOURNAL attribution.
+- 0.6B FULL FT complete (display off during stage2): stage1 8,000 iters
+  (63,951 machine pairs, 1 epoch) + stage2 830 iters (2,216 human pairs x 3
+  epochs, lr 5e-6). Val ~0.97-1.03. 14/14 eval, zero think tokens in output
+  (verified via repr). Published: qwen3-0.6b-full/ on HF + GGUFs f16/q8_0
+  (LoRA subfolder deleted as superseded). llama.cpp q8_0 verified.
+- 1.7B full FT launched WITH AGX_RELAX_CDM_CTXSTORE_TIMEOUT=1 (user plan: try
+  without display-off; defer to display-off if it crashes). ~907 tok/s,
+  stage1 ETA ~3.5h.

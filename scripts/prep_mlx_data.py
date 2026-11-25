@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Prepare MLX training data (chat 'messages' format) from data/train.jsonl.
+"""Prepare MLX training data (raw 'text' format) from data/train.jsonl.
 
 Two-stage curriculum per updated AGENTS.md:
   stage1: machine-teacher pairs (tsv-derived: gemma3/llama3/plain + identity)
   stage2: human-reviewed pairs (csv-derived, source == 'human')
 
-Prompt = exact Qwen chat template rendered by mlx_lm via apply_chat_template
-(system + user + assistant messages); loss on the full sequence (mask_prompt
-off) — prompt tokens include the Cantonese reference, which directly serves the
-' improve basic Cantonese understanding' goal. Think tokens: not handled, not
-present (targets are direct answers).
+text = our own Qwen-format rendering (system/user/assistant, im_start/im_end),
+NO apply_chat_template — the Qwen3 template inserts an empty <arg_key>...</tool_call> block
+into assistant turns, which we must not have (user directive: think tokens do
+not exist). Loss on the full sequence (TextDataset, no masking) — prompt tokens
+include the Cantonese reference, directly serving the 'improve basic Cantonese
+understanding' goal.
 
 ~15% of examples (deterministic, hash-based) omit the Cantonese line for
 robustness without it.
@@ -28,13 +29,14 @@ def user_content(en, zh):
 def omit_zh(en):
     return int(hashlib.md5(en.encode()).hexdigest(), 16) % 100 < 15
 
+IM_END = "<|" + "im_end" + "|>"
+
 def render(ex):
     zh = None if (ex.get("zh") is None or omit_zh(ex["en"])) else ex["zh"]
-    return {"messages": [
-        {"role": "system", "content": SYSTEM},
-        {"role": "user", "content": user_content(ex["en"], zh)},
-        {"role": "assistant", "content": ex["target"]},
-    ]}
+    text = (f"<|im_start|>system\n{SYSTEM}{IM_END}\n"
+            f"<|im_start|>user\n{user_content(ex['en'], zh)}{IM_END}\n"
+            f"<|im_start|>assistant\n{ex['target']}{IM_END}")
+    return {"text": text}
 
 def main():
     out = pathlib.Path("tmp/mlx_data")
@@ -48,7 +50,7 @@ def main():
         with open(out / f"{name}.jsonl", "w", encoding="utf-8") as f:
             for r in rows: f.write(json.dumps(r, ensure_ascii=False) + "\n")
         print(f"{name}.jsonl: {len(rows)}")
-    n_zh1 = sum(1 for r in s1 if "Cantonese reference" in r["messages"][1]["content"])
+    n_zh1 = sum(1 for r in s1 if "Cantonese reference" in r["text"])
     print(f"stage1 with-Cantonese: {n_zh1}/{len(s1)} ({n_zh1/len(s1):.1%})")
 
 if __name__ == "__main__":
