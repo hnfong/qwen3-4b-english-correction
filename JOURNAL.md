@@ -166,3 +166,28 @@ P6 CLI deliverable (correct.py drafted), README, final commits.
 - Published to HF repo alongside 4B: qwen3-1.7b/ PEFT subfolder,
   qwen3-1.7b-english-correction-{f16,q8_0}.gguf; model card section added.
 - GitHub: branch qwen17b-experiment pushed + merged to main (11eb687).
+
+## 2025-11-25 (overnight) — training v2 (cursor), both models retrained + republished
+
+- User-designed data fix implemented: canonical one-time shuffle
+  (scripts/shuffle_train.py -> tmp/train_shuffled.jsonl, 66,167 rows,
+  deterministic) consumed SEQUENTIALLY via a cursor stored in the checkpoint
+  meta; the restart driver passes --offset each cycle. Zero replay, zero
+  in-process shuffling, fixed-padding batching. train_lora.py rewritten
+  without legacy compat (no --max-examples, no sort, no seed-shuffle).
+- OLD reality (quantified): both published models trained on ~20-24 unique
+  examples (~0.03%) because every driver cycle reshuffled identically and
+  re-consumed the same first batches. v2 fixes this.
+- Retrains (fresh examples only, ~1 epoch):
+  - 4B (r16c): 440 examples (0.66%), val 2.25 -> 0.75. 14/14 eval. Trade-off:
+    occasionally synonym-rewrites already-correct sentences (identity pairs
+    are 0.5% of data; dilution vs old repetition-heavy training).
+  - 1.7B (r17b): 636 examples (0.96%), val 3.25 -> 0.81. 14/14 eval, identity
+    behavior preserved (better than 4B v2 here).
+- Both exported (merge in tinygrad) -> GGUF f16 + self-q8_0 -> llama.cpp
+  verified. All v2 artifacts uploaded to HF (adapters + 4 GGUFs, ~16 GB total).
+- hf_repo git got tangled by API-upload commits vs local commits; reconciled
+  via reset to origin/main + card re-commit. Lesson: for big artifacts prefer
+  HfApi.upload_file over git-lfs (git-lfs multi-GB push EOF'd repeatedly).
+- Snapshots cleaned (out/lora_* removed) per user instruction; stale eval
+  reports archived in out/archive_pre_cursor/.
