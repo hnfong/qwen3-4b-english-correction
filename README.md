@@ -21,13 +21,26 @@ Models are published on Hugging Face:
 (HF format) and `qwen3-1.7b-english-correction-{f16,q8_0}.gguf`,
 `qwen3-0.6b-english-correction-{f16,q8_0}.gguf` (llama.cpp).
 
-## Use it
+## Use it (Makefile)
 
 ```bash
-bash scripts/setup.sh          # venv + mlx + mlx-lm + model weights (HF download)
+make interactive            # REPL corrector (downloads/trains everything needed)
+make eval                   # 14 synthetic cases -> out/eval_report_qwen3-0.6b.txt
+make train                  # 2-stage curriculum + fuse (resumes after crashes)
+
+make train BASE_MODEL=Qwen/Qwen3-1.7B   # same pipeline, other size
+```
+
+`BASE_MODEL` is the only variable (any Qwen3 HF path). `make train` sets
+`AGX_RELAX_CDM_CTXSTORE_TIMEOUT=1` (macOS watchdog mitigation, see JOURNAL.md)
+and resumes from the last checkpoint if a stage crashes. To force a fresh
+retrain: `rm -rf out/mlx-<name>-s1 out/mlx-<name>-s2 models/<name>-english-correction-mlx`.
+
+Manual equivalents:
+
+```bash
 .venv/bin/python correct.py "He go to school yesterday."
 .venv/bin/python correct.py "This thingy is cute." --cantonese "呢嚿嘢好可愛。"
-.venv/bin/python correct.py    # interactive mode
 ```
 
 ## Pipeline
