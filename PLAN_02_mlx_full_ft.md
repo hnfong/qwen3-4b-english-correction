@@ -28,6 +28,9 @@ empirically. Training runs ≤30 min until confident.
       + data format (prompt/completion jsonl, completion-only loss)
 
 ### M2 — Data prep  [ ]
+- USER DIRECTIVE: new code must NOT handle think tokens at all (no stripping).
+  Inference on base thinking models won't work — accepted. Fine-tuned models
+  never emit them (SFT targets are direct answers).
 - [ ] scripts/prep_mlx_data.py: train.jsonl → tmp/mlx_data/stage1.jsonl,
       stage2.jsonl, valid.jsonl (prompt = exact Qwen chat template w/ optional
       Cantonese [15% omitted deterministically], completion = target + <|im_end|>)
