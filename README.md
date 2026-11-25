@@ -1,5 +1,8 @@
 # qwen3-4b-english-correction
 
+(This is purely vibe coded, with sparse directions and steering from me. I do
+not take any moral responsibility for anything in this repo.)
+
 Fine-tunes of **Qwen3-1.7B** and **Qwen3-0.6B** that correct badly written English
 sentences — the kind produced by Cantonese L1 speakers editing an English
 dictionary (translationese, grammar slips, Chinglish collocations). Full
